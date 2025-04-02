@@ -82,7 +82,7 @@ The system is made to be easy. People can find what they need fast, and shop own
   </tr>
 </table>
 
-## 👥 Contributors
+## 👥 Developers
 
 <table align="center">
   <tr>
@@ -94,7 +94,7 @@ The system is made to be easy. People can find what they need fast, and shop own
     <td align="center">
       <b>Mico Intertas</b>
       <br />
-      Database, Backend Developer
+      Backend Developer, Database
     </td>
     <td align="center">
       <b>Franz Jeremy Señora</b>
@@ -103,3 +103,9 @@ The system is made to be easy. People can find what they need fast, and shop own
     </td>
   </tr>
 </table>
+
+---
+
+<div align="center">
+  <i>This project was developed for Mikee L. Lutosquen, Jermaine T. Taco, Brandon Lee M. Masculino, and Jhonil P. Cacho.</i>
+</div>
