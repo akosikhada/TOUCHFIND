@@ -6,6 +6,8 @@
     <title>TOUCHFIND | Checkout</title>
     <!-- Bootstrap CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="../css/style.css" rel="stylesheet">
     <style>
         html {
             scrollbar-width: none; /* Firefox */
@@ -24,7 +26,7 @@
             color: white;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
             overflow-x: hidden;
             overflow-y: auto;
             scrollbar-width: none; /* Firefox */
@@ -484,6 +486,7 @@
         @media (max-width: 992px) {
             .checkout-container {
                 flex-direction: column;
+                padding: 20px 15px;
             }
             
             .checkout-left {
@@ -492,6 +495,137 @@
             
             .checkout-right {
                 width: 100%;
+            }
+            
+            .order-summary {
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                padding: 15px 10px;
+                gap: 20px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .checkout-section {
+                padding: 20px;
+            }
+            
+            .order-item {
+                height: auto;
+                min-height: 100px;
+                flex-direction: row;
+            }
+            
+            .image-container {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .order-item-details {
+                width: calc(100% - 100px);
+                padding: 10px;
+            }
+            
+            .order-item-title {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+            
+            .order-item-price {
+                font-size: 16px;
+                position: static;
+                margin-top: 10px;
+            }
+            
+            .payment-method {
+                padding: 12px;
+            }
+            
+            .payment-method-name {
+                font-size: 15px;
+            }
+            
+            .payment-method-description {
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 10px 15px;
+            }
+            
+            .brand {
+                font-size: 20px;
+            }
+            
+            .checkout-container {
+                padding: 10px;
+                gap: 15px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .checkout-section {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .payment-methods {
+                gap: 10px;
+            }
+            
+            .order-item {
+                flex-direction: column;
+                height: auto;
+                min-height: 0;
+            }
+            
+            .image-container {
+                width: 100%;
+                height: 150px;
+                border-radius: 8px 8px 0 0;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            
+            .order-item-image {
+                width: 80%;
+                height: 80%;
+            }
+            
+            .order-item-details {
+                width: 100%;
+                padding: 15px;
+                border-radius: 0 0 8px 8px;
+            }
+            
+            .order-item-price {
+                position: static;
+                margin-top: 10px;
+                text-align: right;
+                width: 100%;
+            }
+            
+            .summary-row.total {
+                font-size: 16px;
+            }
+            
+            .place-order-btn {
+                padding: 12px 15px;
+            }
+            
+            .return-link {
+                font-size: 14px;
             }
         }
         
@@ -519,17 +653,7 @@
     <div class="header">
         <div class="brand">TOUCHFIND</div>
         <div class="header-icons">
-            <div class="search-icon" id="searchIcon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-            </div>
-            <div class="cart-icon cart-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </svg>
-                <span class="cart-count">2</span>
-            </div>
+            <!-- Icons removed from checkout page -->
         </div>
     </div>
     
@@ -634,10 +758,7 @@
         </div>
     </div>
     
-    <footer>
-        © 2025 TOUCHFIND. All Rights Reserved.
-        <img src="../assets/paypal-logo.png" alt="PayPal" class="footer-logo">
-    </footer>
+    <?php include 'footer.php'; ?>
     
     <!-- Bootstrap JS -->
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -674,6 +795,17 @@
             this.style.borderColor = '#3b82f6';
             this.style.boxShadow = 'none';
             btnHighlight.style.left = '-100%';
+        });
+        
+        // Add click handler for place order button
+        placeOrderBtn.addEventListener('click', function() {
+            // Generate a random order ID
+            const year = new Date().getFullYear();
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            const orderId = `ORD-${year}-${randomNum}`;
+            
+            // Redirect to success page with order ID
+            window.location.href = `success.php?order_id=${orderId}`;
         });
         
         // Apply animations with delay
