@@ -15,7 +15,7 @@
                 <div class="col-12 col-sm-6 text-center text-sm-start mb-2 mb-sm-0">
                     <p class="mb-0 footer-text">© 2025 TOUCHFIND. All Rights Reserved.</p>
                 </div>
-                <div class="col-12 col-sm-6 d-flex justify-content-center justify-content-sm-end">
+                <div class="col-12 col-sm-6 d-flex justify-content-center justify-content-sm-end mx-2 mx-sm-0">
                     <div class="d-flex align-items-center gap-2">
                         <img src="../assets/visa-icon.png" alt="Visa" class="payment-icon">
                         <img src="../assets/mastercard-icon.png" alt="Mastercard" class="payment-icon">
