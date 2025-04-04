@@ -1,11 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOUCHFIND | Admin Sidebar</title>
-</head>
-<body>
+<!-- Admin Sidebar -->
+<div class="admin-brand mb-4">
+    <h5 class="text-white mb-0">ADMIN</h5>
+</div>
+
+<nav class="admin-nav">
+    <a href="product_list.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'product_list.php') ? 'active' : ''; ?>">
+        <i class="bi bi-cart nav-icon"></i>
+        PRODUCT
+    </a>
     
-</body>
-</html>
+    <a href="add_product.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'add_product.php') ? 'active' : ''; ?>">
+        <i class="bi bi-plus-circle nav-icon"></i>
+        ADD PRODUCT
+    </a>
+    
+    <a href="delivery_updates.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'delivery_updates.php') ? 'active' : ''; ?>">
+        <i class="bi bi-truck nav-icon"></i>
+        DELIVERY UPDATES
+    </a>
+    
+    <a href="sales.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'sales.php') ? 'active' : ''; ?>">
+        <i class="bi bi-graph-up nav-icon"></i>
+        SALES
+    </a>
+    
+    <a href="chatbot.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'chatbot.php') ? 'active' : ''; ?>">
+        <i class="bi bi-chat-dots nav-icon"></i>
+        CHAT
+    </a>
+</nav>

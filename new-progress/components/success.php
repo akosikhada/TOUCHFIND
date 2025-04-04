@@ -150,6 +150,7 @@ $orderNumber = isset($_GET['order_id']) ? $_GET['order_id'] : 'ORD-' . date('Y')
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
                         transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            width: 250px;
         }
         
         .continue-button.visible {
