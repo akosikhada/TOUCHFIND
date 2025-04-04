@@ -6,6 +6,8 @@
     <title>TOUCHFIND | Cart</title>
     <!-- Bootstrap CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="../css/style.css" rel="stylesheet">
     <style>
         html {
             scrollbar-width: none; /* Firefox */
@@ -24,7 +26,7 @@
             color: white;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
             overflow-x: hidden;
             overflow-y: auto;
             scrollbar-width: none; /* Firefox */
@@ -166,14 +168,11 @@
             min-height: 120px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            flex-wrap: wrap;
         }
         
         .cart-item.removing {
-            opacity: 0;
-            height: 0;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+            display: none;
         }
         
         .cart-item-delay-1 {
@@ -233,11 +232,14 @@
             justify-content: center;
             align-items: center;
             margin: 0 20px;
+            background-color: #1e293b;
+            border-radius: 6px;
+            padding: 2px;
         }
         
         .quantity-btn {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             background: #2a3449;
             border: none;
             color: white;
@@ -245,17 +247,28 @@
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
-            margin-right: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .quantity-input {
-            width: 30px;
+            width: 40px;
             background: transparent;
             border: none;
             color: white;
             font-size: 16px;
             text-align: center;
-            margin-right: 3px;
+            font-weight: 600;
+            appearance: none; /* Standard property */
+            -webkit-appearance: none; /* Chrome, Safari, Edge */
+            -moz-appearance: textfield; /* Firefox */
+        }
+        
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         
         .cart-update-btn {
@@ -291,13 +304,26 @@
             color: white;
         }
         
+        .item-actions {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            flex-wrap: nowrap;
+        }
+        
+        .action-row {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
         .remove-link {
             color: #ef4444;
             text-decoration: none;
             font-size: 14px;
-            display: block;
-            margin-top: 8px;
             cursor: pointer;
+            white-space: nowrap;
+            margin-left: 15px;
         }
         
         .remove-link:hover {
@@ -510,6 +536,168 @@
             
             .order-summary {
                 width: 100%;
+                margin-top: 20px;
+            }
+            
+            .cart-container {
+                padding: 20px 15px;
+            }
+            
+            .item-actions {
+                flex-wrap: wrap;
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .action-row {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cart-container {
+                padding: 15px 10px;
+            }
+            
+            .cart-title {
+                font-size: 20px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .cart-item {
+                padding: 15px;
+            }
+            
+            .cart-item-details {
+                margin-bottom: 10px;
+            }
+            
+            .image-container {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .subtotal-box {
+                min-width: 100px;
+                padding: 10px;
+            }
+            
+            .subtotal-value {
+                font-size: 20px;
+            }
+            
+            .quantity-controls {
+                margin: 0 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 10px 15px;
+                height: 50px;
+            }
+            
+            .brand {
+                font-size: 20px;
+            }
+            
+            .main-container {
+                margin-top: 60px;
+            }
+            
+            .cart-container {
+                padding: 10px;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+            
+            .image-container {
+                width: 100%;
+                height: 150px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .cart-item-image {
+                width: auto;
+                height: 100%;
+                max-width: 100%;
+            }
+            
+            .cart-item-details {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .item-actions {
+                width: 100%;
+                flex-direction: column;
+                margin-left: 0;
+            }
+            
+            .action-row {
+                width: 100%;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+            
+            .subtotal-box {
+                width: 100%;
+                margin-top: 0;
+            }
+            
+            .quantity-controls {
+                margin: 0;
+            }
+            
+            .remove-link {
+                margin-left: auto;
+            }
+            
+            .payment-methods-container {
+                padding: 15px;
+            }
+            
+            .payment-method {
+                padding: 10px;
+            }
+            
+            .payment-method-name {
+                font-size: 14px;
+            }
+            
+            .payment-method-description {
+                font-size: 12px;
+            }
+        }
+        
+        /* Helper class for mobile layout */
+        @media (max-width: 576px) {
+            .item-actions {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+            
+            .action-row {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            
+            .action-row:last-child {
+                margin-bottom: 0;
             }
         }
         
@@ -585,17 +773,7 @@
     <div class="header">
         <div class="brand">TOUCHFIND</div>
         <div class="header-icons">
-            <div class="search-icon" id="searchIcon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-            </div>
-            <div class="cart-icon cart-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </svg>
-                <span class="cart-count">2</span>
-            </div>
+            <!-- Icons removed from cart page -->
         </div>
     </div>
     
@@ -610,23 +788,26 @@
                 <div class="cart-items">
                     <div class="cart-item cart-item-delay-1" data-price="814.00">
                         <div class="image-container">
-                            <img src="../assets/drill.png" alt="Boysen Paint" class="cart-item-image">
+                            <img src="../assets/chair.png" alt="Boysen Paint" class="cart-item-image">
                         </div>
                         <div class="cart-item-details">
                             <div class="cart-category">Category: Paints</div>
                             <div class="cart-title">Boysen 600</div>
-                            <div class="cart-available">Available: 50</div>
+                            <div class="cart-available">Available: In Stock</div>
                         </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn decrement-btn">-</button>
-                            <input type="text" class="quantity-input" value="3" readonly>
-                            <button class="quantity-btn increment-btn">+</button>
-                            <button class="cart-update-btn">Update</button>
-                        </div>
-                        <div class="subtotal-box">
-                            <div class="subtotal-label">Subtotal:</div>
-                            <div class="subtotal-value">2,442.00</div>
-                            <a href="#" class="remove-link">Remove Item</a>
+                        <div class="item-actions">
+                            <div class="action-row">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn minus" onclick="decrementQuantity(this)">-</button>
+                                    <input type="number" class="quantity-input" value="3" min="1" max="99" readonly>
+                                    <button class="quantity-btn plus" onclick="incrementQuantity(this)">+</button>
+                                </div>
+                                <a class="remove-link" data-id="0" onclick="removeCartItem(0)">Remove</a>
+                            </div>
+                            <div class="subtotal-box">
+                                <div class="subtotal-label">Subtotal</div>
+                                <div class="subtotal-value">2,442.00</div>
+                            </div>
                         </div>
                     </div>
                     
@@ -639,16 +820,19 @@
                             <div class="cart-title">Hammer</div>
                             <div class="cart-available">Available: 50</div>
                         </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn decrement-btn">-</button>
-                            <input type="text" class="quantity-input" value="3" readonly>
-                            <button class="quantity-btn increment-btn">+</button>
-                            <button class="cart-update-btn">Update</button>
-                        </div>
-                        <div class="subtotal-box">
-                            <div class="subtotal-label">Subtotal:</div>
-                            <div class="subtotal-value">450.00</div>
-                            <a href="#" class="remove-link">Remove Item</a>
+                        <div class="item-actions">
+                            <div class="action-row">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn minus" onclick="decrementQuantity(this)">-</button>
+                                    <input type="number" class="quantity-input" value="3" min="1" max="99" readonly>
+                                    <button class="quantity-btn plus" onclick="incrementQuantity(this)">+</button>
+                                </div>
+                                <a class="remove-link" data-id="1" onclick="removeCartItem(1)">Remove</a>
+                            </div>
+                            <div class="subtotal-box">
+                                <div class="subtotal-label">Subtotal</div>
+                                <div class="subtotal-value">450.00</div>
+                            </div>
                         </div>
                     </div>
                     
@@ -693,16 +877,12 @@
                         <span>₱2,892.00</span>
                     </div>
                     <div class="summary-row">
-                        <span>Shipping</span>
-                        <span>₱100.00</span>
-                    </div>
-                    <div class="summary-row">
                         <span>Tax</span>
                         <span>₱50.00</span>
                     </div>
                     <div class="summary-row total">
                         <span>Total</span>
-                        <span>₱3,042.00</span>
+                        <span>₱2,942.00</span>
                     </div>
                     
                     <button class="action-btn" id="checkout-button">
@@ -730,14 +910,7 @@
         </div>
     </div>
     
-    <footer>
-        © 2025 TOUCHFIND. All Rights Reserved.
-        <div class="payment-icons">
-            <img src="../assets/visa.png" alt="Visa" class="payment-icon">
-            <img src="../assets/mastercard.png" alt="Mastercard" class="payment-icon">
-            <img src="../assets/paypal-logo.png" alt="PayPal" class="payment-icon">
-        </div>
-    </footer>
+    <?php include 'footer.php'; ?>
     
     <!-- Bootstrap JS -->
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -774,16 +947,19 @@
                             <div class="cart-title">${item.name}</div>
                             <div class="cart-available">Available: 50</div>
                         </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn decrement-btn">-</button>
-                            <input type="text" class="quantity-input" value="${item.quantity}" readonly>
-                            <button class="quantity-btn increment-btn">+</button>
-                            <button class="cart-update-btn">Update</button>
-                        </div>
-                        <div class="subtotal-box">
-                            <div class="subtotal-label">Subtotal:</div>
-                            <div class="subtotal-value">${subtotal}</div>
-                            <a href="#" class="remove-link">Remove Item</a>
+                        <div class="item-actions">
+                            <div class="action-row">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn minus" data-id="${index}" onclick="decrementQuantity(this)">-</button>
+                                    <input type="text" class="quantity-input" value="${item.quantity}" data-id="${index}" readonly>
+                                    <button class="quantity-btn plus" data-id="${index}" onclick="incrementQuantity(this)">+</button>
+                                </div>
+                                <a class="remove-link" data-id="${index}" onclick="removeCartItem('${index}')">Remove</a>
+                            </div>
+                            <div class="subtotal-box">
+                                <div class="subtotal-label">Subtotal</div>
+                                <div class="subtotal-value">${subtotal}</div>
+                            </div>
                         </div>
                     `;
                     
@@ -798,55 +974,48 @@
                 // Update total price
                 updateTotalPrice();
                 
-                // Attach event listeners to new elements
-                addQuantityControlsEventListeners();
-                addRemoveItemEventListeners();
+                // Attach event listeners to quantity buttons
+                attachQuantityButtonListeners();
+                
+                // Attach event listeners for remove links
+                attachRemoveItemListeners();
             }
         });
         
-        // Re-attach event listeners to dynamically added elements
-        function addQuantityControlsEventListeners() {
-            document.querySelectorAll('.increment-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const input = this.parentNode.querySelector('.quantity-input');
-                    let value = parseInt(input.value);
-                    input.value = value + 1;
-                    updateItemSubtotal(this);
-                });
-            });
-            
-            document.querySelectorAll('.decrement-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const input = this.parentNode.querySelector('.quantity-input');
-                    let value = parseInt(input.value);
+        // Function to attach quantity button listeners
+        function attachQuantityButtonListeners() {
+            document.querySelectorAll('.minus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantityInput = this.parentNode.querySelector('.quantity-input');
+                    let value = parseInt(quantityInput.value);
                     if (value > 1) {
-                        input.value = value - 1;
+                        quantityInput.value = value - 1;
                         updateItemSubtotal(this);
+                        showNotification("Quantity updated");
                     }
                 });
             });
-            
-            document.querySelectorAll('.cart-update-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    updateCartInLocalStorage();
-                    showUpdateNotification();
+
+            document.querySelectorAll('.plus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantityInput = this.parentNode.querySelector('.quantity-input');
+                    let value = parseInt(quantityInput.value);
+                    if (value < 99) { // Adding a reasonable upper limit
+                        quantityInput.value = value + 1;
+                        updateItemSubtotal(this);
+                        showNotification("Quantity updated");
+                    }
                 });
             });
         }
-        
-        function addRemoveItemEventListeners() {
-            document.querySelectorAll('.remove-link').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+
+        // Function to attach remove item listeners
+        function attachRemoveItemListeners() {
+            document.querySelectorAll('.remove-link').forEach(link => {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const item = this.closest('.cart-item');
-                    item.classList.add('removing');
-                    
-                    setTimeout(() => {
-                        item.remove();
-                        updateTotalPrice();
-                        updateCartCount();
-                        updateCartInLocalStorage();
-                    }, 300);
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    removeCartItem(productId);
                 });
             });
         }
@@ -916,10 +1085,15 @@
             const price = parseFloat(item.getAttribute('data-price'));
             const quantity = parseInt(item.querySelector('.quantity-input').value);
             const subtotal = price * quantity;
-            item.querySelector('.subtotal-value').textContent = `${subtotal.toFixed(2)}`;
             
-            updateTotalPrice();
+            // Update the subtotal display
+            item.querySelector('.subtotal-value').textContent = subtotal.toFixed(2);
+            
+            // Update cart in localStorage
             updateCartInLocalStorage();
+            
+            // Update the order summary
+            updateTotalPrice();
         }
         
         function updateTotalPrice() {
@@ -929,15 +1103,14 @@
                 total += subtotal;
             });
             
-            // Fixed shipping and tax costs
-            const shipping = 100;
+            // Fixed tax cost
             const tax = 50;
             
             // Update the subtotal
             document.querySelector('.summary-row:first-child span:last-child').textContent = `₱${total.toFixed(2)}`;
             
-            // Calculate final total with shipping and tax
-            const finalTotal = total + shipping + tax;
+            // Calculate final total with tax
+            const finalTotal = total + tax;
             
             // Update the total
             document.querySelector('.summary-row.total span:last-child').textContent = `₱${finalTotal.toFixed(2)}`;
@@ -1021,6 +1194,135 @@
         document.querySelector('.action-secondary').addEventListener('click', function() {
             window.location.href = 'categories.php';
         });
+
+        // Function to update cart item quantity
+        function updateCartItemQuantity(productId, newQuantity) {
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('touchfindCart')) || [];
+            
+            // Find the cart item index
+            const itemIndex = parseInt(productId);
+            
+            if (itemIndex >= 0 && itemIndex < cart.length) {
+                // Update quantity
+                cart[itemIndex].quantity = newQuantity;
+                
+                // Save updated cart to localStorage
+                localStorage.setItem('touchfindCart', JSON.stringify(cart));
+                
+                // Update subtotal
+                updateSubtotal(itemIndex, newQuantity);
+                
+                // Update total
+                updateTotalPrice();
+            }
+        }
+
+        // Function to update subtotal for an item
+        function updateSubtotal(itemIndex, quantity) {
+            let cart = JSON.parse(localStorage.getItem('touchfindCart')) || [];
+            if (itemIndex >= 0 && itemIndex < cart.length) {
+                const price = cart[itemIndex].price;
+                const subtotal = price * quantity;
+                
+                // Update subtotal display
+                const subtotalElement = document.querySelector(`.subtotal[data-id="${itemIndex}"]`);
+                if (subtotalElement) {
+                    subtotalElement.textContent = `${subtotal.toFixed(2)}`;
+                }
+            }
+        }
+
+        // Function to remove cart item
+        function removeCartItem(productId) {
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('touchfindCart')) || [];
+            
+            // Find the item element
+            const itemElement = document.querySelector(`.cart-item .remove-link[data-id="${productId}"]`).closest('.cart-item');
+            
+            if (itemElement) {
+                // Remove the item immediately
+                itemElement.remove();
+                
+                // Remove from cart array
+                cart.splice(productId, 1);
+                
+                // Save updated cart to localStorage
+                localStorage.setItem('touchfindCart', JSON.stringify(cart));
+                
+                // Update cart count
+                updateCartCount();
+                
+                // Update total price
+                updateTotalPrice();
+                
+                // Refresh the page if cart is empty
+                if (cart.length === 0) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                }
+            }
+        }
+
+        // Function to show a notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#4CAF50';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '1000';
+            notification.style.transform = 'translateY(-20px)';
+            notification.style.opacity = '0';
+            notification.style.transition = 'all 0.3s ease';
+            notification.innerHTML = message;
+            
+            // Add to body
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateY(-20px)';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Direct increment and decrement functions for onclick handlers
+        function incrementQuantity(button) {
+            const quantityInput = button.parentNode.querySelector('.quantity-input');
+            let value = parseInt(quantityInput.value);
+            if (value < 99) {
+                quantityInput.value = value + 1;
+                updateItemSubtotal(button);
+                showNotification("Quantity updated");
+            }
+        }
+
+        function decrementQuantity(button) {
+            const quantityInput = button.parentNode.querySelector('.quantity-input');
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+                updateItemSubtotal(button);
+                showNotification("Quantity updated");
+            }
+        }
     </script>
 </body>
 </html>

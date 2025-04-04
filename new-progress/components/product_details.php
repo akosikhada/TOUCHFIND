@@ -6,20 +6,25 @@
     <title>TOUCHFIND | Product Details</title>
     <!-- Bootstrap CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="../css/style.css" rel="stylesheet">
     <style>
         body {
             background-color: #141414;
             color: white;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
         
         /* Header Styles */
         .header {
             background-color: #1a1a1a;
-            padding: 15px 30px;
+            padding: 10px 30px;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
@@ -28,7 +33,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 50px;
             z-index: 100;
         }
         
@@ -75,8 +80,11 @@
         /* Main Content Layout */
         .main-container {
             display: flex;
-            margin-top: 60px; /* Height of header */
-            height: calc(100vh - 60px);
+            margin-top: 50px; /* Header height */
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            height: calc(100vh - 90px); /* Adjust for header and footer */
         }
         
         /* Product Details Styles */
@@ -84,11 +92,8 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            padding: 30px;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+            overflow-y: hidden;
+            padding: 15px 30px 40px 30px; /* Reduced bottom padding */
         }
         
         .product-container::-webkit-scrollbar {
@@ -97,7 +102,7 @@
         
         .product-header {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
         
         .back-link {
@@ -128,26 +133,31 @@
         
         .product-detail {
             display: flex;
-            margin-bottom: 40px;
+            margin-bottom: 20px; /* Reduced from 30px */
             animation: fadeIn 0.8s ease forwards;
+            overflow-y: visible;
+            height: auto;
+            margin-top: 50px;
         }
         
         .product-detail-inner {
             display: flex;
+            flex-direction: row;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             background-color: #1F2937;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             justify-content: center;
+            height: auto;
         }
         
         .product-image-container {
-            width: 45%;
+            width: 40%;
             background-color: white;
-            padding: 30px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -160,14 +170,14 @@
         .product-image {
             width: 80%;
             height: auto;
-            max-height: 300px;
+            max-height: 250px;
             object-fit: contain;
             border-radius: 8px;
         }
         
         .product-info {
-            width: 55%;
-            padding: 40px;
+            width: 60%;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             animation: slideInRight 0.8s ease forwards;
@@ -180,54 +190,53 @@
         .product-category {
             color: #aaa;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             letter-spacing: 0.5px;
         }
         
         .product-title {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 15px;
-            line-height: 1.3;
+            margin-bottom: 12px; /* Slightly reduced */
         }
         
         .product-price {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #4a90e2;
-            margin-bottom: 20px;
+            margin-bottom: 12px; /* Slightly reduced */
         }
         
         .product-description {
             color: #ddd;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px; /* Reduced from 20px */
         }
         
         .product-meta {
             display: flex;
             flex-wrap: wrap;
-            margin-bottom: 25px;
-            padding-bottom: 25px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .meta-item {
             display: flex;
             flex-direction: column;
-            margin-right: 40px;
-            margin-bottom: 15px;
+            margin-right: 30px;
+            margin-bottom: 0;
         }
         
         .meta-item span:first-child {
             color: #aaa;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 3px;
         }
         
         .meta-item span:last-child {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
         }
         
@@ -238,18 +247,18 @@
         .product-actions {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px; /* Reduced gap between buttons */
         }
         
         .quantity-container {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Reduced bottom margin */
         }
         
         .quantity-label {
-            margin-right: 15px;
-            font-size: 16px;
+            margin-right: 12px;
+            font-size: 14px;
         }
         
         .quantity {
@@ -261,39 +270,35 @@
         }
         
         .quantity-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: #263447;
             border: none;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
         
-        .quantity-btn:hover {
-            background-color: #32425c;
-        }
-        
         #quantity {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             text-align: center;
             border: none;
             background-color: transparent;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .add-to-cart, .back-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 48px;
+            height: 40px;
             border-radius: 5px;
             font-weight: 600;
             cursor: pointer;
@@ -318,7 +323,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             letter-spacing: 0.5px;
             position: relative;
             z-index: 2;
@@ -492,6 +497,210 @@
                 transform: translateX(0);
             }
         }
+        
+        /* Footer Styles */
+        .footer-container {
+            background-color: #1a1a1a !important;
+            border-top: 1px solid #333;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            height: 40px; /* Explicitly set footer height */
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            margin: 0;
+            white-space: nowrap;
+        }
+        
+        .payment-icon {
+            width: 28px;
+            height: auto;
+            transition: transform 0.2s ease;
+        }
+        
+        .payment-icon:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive Footer Styles */
+        @media (max-width: 768px) {
+            .payment-icon {
+                width: 25px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-text {
+                font-size: 12px;
+            }
+            
+            .payment-icon {
+                width: 20px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .footer-text {
+                font-size: 11px;
+            }
+            
+            .payment-icon {
+                width: 18px;
+            }
+        }
+        
+        /* Styles for tablets and below - column layout */
+        @media (max-width: 768px) {
+            .product-detail-inner {
+                flex-direction: column;
+                max-width: 90%;
+            }
+            
+            .product-image-container {
+                width: 100%;
+                padding: 15px;
+                border-radius: 10px 10px 0 0;
+                max-height: 250px;
+            }
+            
+            .product-info {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .product-container {
+                padding: 10px 20px 40px 20px; /* Reduced bottom padding */
+            }
+            
+            .product-description {
+                max-height: 60px;
+                overflow-y: auto;
+            }
+            
+            .product-meta {
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .meta-item {
+                margin-right: 20px;
+            }
+            
+            .quantity-container {
+                margin-bottom: 10px;
+            }
+            
+            /* Update animations for column layout */
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+        
+        /* Small mobile styles */
+        @media (max-width: 576px) {
+            .product-detail-inner {
+                max-width: 100%;
+            }
+            
+            .product-image-container {
+                padding: 10px;
+                max-height: 200px;
+            }
+            
+            .product-info {
+                padding: 15px;
+            }
+            
+            .product-title {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .product-price {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .product-description {
+                font-size: 13px;
+                line-height: 1.4;
+                margin-bottom: 15px;
+                max-height: 60px;
+            }
+            
+            .product-container {
+                padding: 10px 15px 40px 15px;
+            }
+            
+            .product-meta {
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+            }
+            
+            .meta-item {
+                margin-right: 15px;
+            }
+            
+            .meta-item span:first-child {
+                font-size: 12px;
+            }
+            
+            .meta-item span:last-child {
+                font-size: 14px;
+            }
+            
+            .add-to-cart, .back-button {
+                height: 36px;
+            }
+            
+            .btn-text {
+                font-size: 14px;
+            }
+            
+            .product-detail {
+                margin-bottom: 15px;
+            }
+        }
+        
+        .btn {
+            padding: 8px 12px; /* Reduce button padding */
+            font-size: 14px; /* Smaller font size */
+        }
+        
+        .quantity-input {
+            height: 34px; /* Slightly smaller input height */
+            width: 40px; /* Slightly smaller width */
+        }
+        
+        .quantity-btn {
+            height: 34px; /* Match input height */
+            width: 34px; /* Maintain square shape */
+            font-size: 16px; /* Slightly smaller font size */
+        }
     </style>
 </head>
 <body>
@@ -527,59 +736,61 @@
                 <span class="category-tag">Tools & Hardware</span>
             </div>
             <div class="product-detail">
-                <div class="product-image-container">
-                    <img src="../assets/drill.png" alt="Professional Power Drill Set" class="product-image" loading="lazy">
-                </div>
-                <div class="product-info">
-                    <div class="product-info-flex">
-                        <div class="product-category">Tools & Hardware</div>
-                        <h1 class="product-title">Professional Power Drill Set</h1>
-                        <div class="product-price">₱ 150.00</div>
-                        <div class="product-description">
-                            This premium power drill set includes everything you need for professional results. Features a powerful motor, adjustable speed settings, and comes with a comprehensive set of bits for various applications.
-                        </div>
-                        <div class="product-meta">
-                            <div class="meta-item">
-                                <span>Aisle</span>
-                                <span class="aisle-highlight">A7</span>
-                            </div>
-                            <div class="meta-item">
-                                <span>Row</span>
-                                <span>3</span>
-                            </div>
-                            <div class="meta-item">
-                                <span>Shelf</span>
-                                <span>B2</span>
-                            </div>
-                        </div>
+                <div class="product-detail-inner">
+                    <div class="product-image-container">
+                        <img src="../assets/drill.png" alt="Professional Power Drill Set" class="product-image" loading="lazy">
                     </div>
-                    <div class="product-actions">
-                        <div class="quantity-container">
-                            <div class="quantity-label">Quantity:</div>
-                            <div class="quantity">
-                                <button class="quantity-btn minus">-</button>
-                                <input type="text" id="quantity" value="1" readonly>
-                                <button class="quantity-btn plus">+</button>
+                    <div class="product-info">
+                        <div class="product-info-flex">
+                            <div class="product-category">Tools & Hardware</div>
+                            <h1 class="product-title">Professional Power Drill Set</h1>
+                            <div class="product-price">₱ 150.00</div>
+                            <div class="product-description">
+                                This premium power drill set includes everything you need for professional results. Features a powerful motor, adjustable speed settings, and comes with a comprehensive set of bits for various applications.
+                            </div>
+                            <div class="product-meta">
+                                <div class="meta-item">
+                                    <span>Aisle</span>
+                                    <span class="aisle-highlight">A7</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>Row</span>
+                                    <span>3</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>Shelf</span>
+                                    <span>B2</span>
+                                </div>
                             </div>
                         </div>
-                        <button class="add-to-cart">
-                            <span class="btn-text">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="cart-icon-btn">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                </svg>
-                                Add to Cart
-                            </span>
-                            <span class="btn-highlight"></span>
-                        </button>
-                        <button class="back-button">
-                            <span class="btn-text">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="shopping-icon">
-                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                                </svg>
-                                Continue Shopping
-                            </span>
-                            <span class="btn-shopping-highlight"></span>
-                        </button>
+                        <div class="product-actions">
+                            <div class="quantity-container">
+                                <div class="quantity-label">Quantity:</div>
+                                <div class="quantity">
+                                    <button class="quantity-btn minus">-</button>
+                                    <input type="text" id="quantity" value="1" readonly>
+                                    <button class="quantity-btn plus">+</button>
+                                </div>
+                            </div>
+                            <button class="add-to-cart">
+                                <span class="btn-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="cart-icon-btn">
+                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                    </svg>
+                                    Add to Cart
+                                </span>
+                                <span class="btn-highlight"></span>
+                            </button>
+                            <button class="back-button">
+                                <span class="btn-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="shopping-icon">
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                    </svg>
+                                    Continue Shopping
+                                </span>
+                                <span class="btn-shopping-highlight"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -873,5 +1084,7 @@
             }
         });
     </script>   
+    
+    <?php include 'footer.php'; ?>
 </body>
 </html>
