@@ -14,16 +14,6 @@
         ADD PRODUCT
     </a>
     
-    <a href="delivery_updates.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'delivery_updates.php') ? 'active' : ''; ?>">
-        <i class="bi bi-truck nav-icon"></i>
-        DELIVERY UPDATES
-    </a>
-    
-    <a href="sales.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'sales.php') ? 'active' : ''; ?>">
-        <i class="bi bi-graph-up nav-icon"></i>
-        SALES
-    </a>
-    
     <a href="chatbot.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'chatbot.php') ? 'active' : ''; ?>">
         <i class="bi bi-chat-dots nav-icon"></i>
         CHAT

@@ -4,38 +4,14 @@
 
 // Initialize charts when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-	// Initialize sales performance chart if it exists on the page
-	const salesChartElement = document.getElementById("salesChart");
-	if (salesChartElement) {
-		initializeSalesChart(salesChartElement);
-	}
-
 	// Initialize product image preview
 	const productImageInput = document.getElementById("productImage");
 	if (productImageInput) {
 		initializeProductImagePreview(productImageInput);
 	}
 
-	// Add active class to the current month button by default
-	const periodButtons = document.querySelectorAll(
-		".btn-group .btn-outline-secondary"
-	);
-	if (periodButtons.length > 0) {
-		// Remove active class from all buttons
-		periodButtons.forEach((btn) => btn.classList.remove("active"));
-		// Find and set the Month button as active
-		periodButtons.forEach((btn) => {
-			if (btn.textContent.trim() === "Month") {
-				btn.classList.add("active");
-			}
-		});
-	}
-
 	// Initialize product action buttons
 	initializeProductActions();
-
-	// Initialize delivery action buttons
-	initializeDeliveryActions();
 
 	// Initialize chat message action buttons
 	initializeChatMessageActions();
@@ -55,12 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		saveProductChangesBtn.addEventListener("click", saveProductChanges);
 	}
 
-	// Initialize save delivery changes button
-	const saveDeliveryChangesBtn = document.getElementById("saveDeliveryChanges");
-	if (saveDeliveryChangesBtn) {
-		saveDeliveryChangesBtn.addEventListener("click", saveDeliveryChanges);
-	}
-
 	// Initialize save message changes button
 	const saveMessageChangesBtn = document.getElementById("saveMessageChanges");
 	if (saveMessageChangesBtn) {
@@ -73,106 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Initialize the notification container
 	initializeNotifications();
 });
-
-/**
- * Initialize the sales performance chart
- * @param {HTMLElement} chartElement - The canvas element for the chart
- */
-function initializeSalesChart(chartElement) {
-	const ctx = chartElement.getContext("2d");
-
-	const chart = new Chart(ctx, {
-		type: "line",
-		data: {
-			labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-			datasets: [
-				{
-					label: "Sales",
-					data: [4000, 3000, 5000, 2800, 1800, 2500, 3500],
-					borderColor: "#c32424",
-					backgroundColor: "rgba(195, 36, 36, 0.1)",
-					borderWidth: 2,
-					tension: 0.4,
-					fill: true,
-					pointBackgroundColor: "#c32424",
-					pointRadius: 4,
-					pointHoverRadius: 6,
-				},
-			],
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			plugins: {
-				legend: {
-					display: false,
-				},
-				tooltip: {
-					mode: "index",
-					intersect: false,
-					backgroundColor: "rgba(0, 0, 0, 0.7)",
-					titleColor: "#fff",
-					bodyColor: "#fff",
-					borderColor: "rgba(255, 255, 255, 0.2)",
-					borderWidth: 1,
-				},
-			},
-			scales: {
-				x: {
-					grid: {
-						display: true,
-						color: "rgba(0, 0, 0, 0.05)",
-					},
-				},
-				y: {
-					beginAtZero: true,
-					grid: {
-						color: "rgba(0, 0, 0, 0.05)",
-					},
-					ticks: {
-						callback: function (value) {
-							if (value >= 1000) {
-								return value / 1000 + "k";
-							}
-							return value;
-						},
-					},
-				},
-			},
-		},
-	});
-
-	// Add period selection functionality
-	const periodButtons = document.querySelectorAll(
-		".btn-group .btn-outline-secondary"
-	);
-	if (periodButtons.length > 0) {
-		periodButtons.forEach((button) => {
-			button.addEventListener("click", function () {
-				// Remove active class from all buttons
-				periodButtons.forEach((btn) => btn.classList.remove("active"));
-				// Add active class to clicked button
-				this.classList.add("active");
-
-				// Here you would typically update the chart data based on the period
-				// For demonstration, we're just showing different data for each period
-				let newData;
-				if (this.textContent.trim() === "Today") {
-					newData = [500, 600, 700, 800, 750, 900, 1000];
-				} else if (this.textContent.trim() === "Week") {
-					newData = [2000, 1800, 2200, 2400, 2100, 1900, 2300];
-				} else if (this.textContent.trim() === "Month") {
-					newData = [4000, 3000, 5000, 2800, 1800, 2500, 3500];
-				} else if (this.textContent.trim() === "Year") {
-					newData = [30000, 35000, 40000, 45000, 42000, 47000, 52000];
-				}
-
-				chart.data.datasets[0].data = newData;
-				chart.update();
-			});
-		});
-	}
-}
 
 /**
  * Initialize product image preview functionality
@@ -496,265 +366,6 @@ function setButtonLoading(button, loading, originalContent = null) {
 }
 
 /**
- * Initialize delivery action buttons (edit and delete)
- */
-function initializeDeliveryActions() {
-	// Edit delivery button functionality
-	const editButtons = document.querySelectorAll("button[data-delivery-id]");
-	if (editButtons.length > 0) {
-		editButtons.forEach((button) => {
-			// Only add click handler to edit buttons
-			if (button.classList.contains("edit-btn")) {
-				button.addEventListener("click", function (e) {
-					e.preventDefault();
-					const deliveryId = this.getAttribute("data-delivery-id");
-					const deliveryRow = this.closest("tr");
-
-					// Get delivery details from the row
-					openEditDeliveryModal(deliveryRow, deliveryId);
-				});
-			}
-		});
-	}
-
-	// Delete delivery button functionality
-	const deleteButtons = document.querySelectorAll(
-		"button.delete-btn[data-delivery-id]"
-	);
-	if (deleteButtons.length > 0) {
-		deleteButtons.forEach((button) => {
-			button.addEventListener("click", function (e) {
-				e.preventDefault();
-				const deliveryId = this.getAttribute("data-delivery-id");
-				const deliveryRow = this.closest("tr");
-				const orderId = deliveryRow.querySelector("td:first-child").textContent;
-				const customerName =
-					deliveryRow.querySelector("td:nth-child(2)").textContent;
-
-				// Open delete confirmation modal
-				openDeleteDeliveryModal(orderId, customerName, deliveryId);
-			});
-		});
-	}
-
-	// Note: The delete confirmation button handler is now managed by initializeTypeDeleteConfirmation()
-}
-
-/**
- * Opens the edit delivery modal and populates it with the delivery data
- * @param {HTMLElement} deliveryRow - The table row element containing the delivery data
- * @param {string} deliveryId - The delivery ID
- */
-function openEditDeliveryModal(deliveryRow, deliveryId) {
-	// Get delivery details from the row
-	const orderId = deliveryRow.querySelector("td:first-child").textContent;
-	const customerName = deliveryRow.querySelector("td:nth-child(2)").textContent;
-	const deliveryAddress =
-		deliveryRow.querySelector("td:nth-child(3)").textContent;
-	const deliveryStatus = deliveryRow.querySelector(
-		"td:nth-child(4) .status-badge"
-	).textContent;
-	const estimatedDelivery =
-		deliveryRow.querySelector("td:nth-child(5)").textContent;
-
-	// Set values in the modal
-	document.getElementById("editDeliveryId").value = deliveryId;
-	document.getElementById("editOrderId").value = orderId;
-	document.getElementById("editCustomerName").value = customerName;
-	document.getElementById("editDeliveryAddress").value = deliveryAddress;
-
-	// Set the status dropdown
-	const statusSelect = document.getElementById("editDeliveryStatus");
-	for (let i = 0; i < statusSelect.options.length; i++) {
-		if (statusSelect.options[i].value === deliveryStatus) {
-			statusSelect.selectedIndex = i;
-			break;
-		}
-	}
-
-	// Convert date format to yyyy-mm-dd for the date input
-	const dateParts = estimatedDelivery.split(", ")[0].split(" ");
-	const month = new Date(Date.parse(dateParts[0] + " 1, 2000")).getMonth() + 1;
-	const dateStr = `2024-${month
-		.toString()
-		.padStart(2, "0")}-${dateParts[1].padStart(2, "0")}`;
-	document.getElementById("editEstimatedDelivery").value = dateStr;
-
-	// Show the modal
-	const editModal = new bootstrap.Modal(
-		document.getElementById("editDeliveryModal")
-	);
-	editModal.show();
-}
-
-/**
- * Opens the delete delivery confirmation modal
- * @param {string} orderId - Order ID to delete
- * @param {string} customerName - Customer name
- * @param {string} deliveryId - ID of the delivery
- */
-function openDeleteDeliveryModal(orderId, customerName, deliveryId) {
-	// Set delivery details in the modal
-	document.getElementById("deleteDeliveryOrder").textContent = orderId;
-	document.getElementById("deleteDeliveryCustomer").textContent = customerName;
-	document.getElementById("deleteDeliveryId").value = deliveryId;
-
-	// Show the modal
-	const deleteModal = new bootstrap.Modal(
-		document.getElementById("deleteDeliveryModal")
-	);
-	deleteModal.show();
-}
-
-/**
- * Saves the changes made to a delivery in the edit modal
- */
-function saveDeliveryChanges() {
-	// Get form values
-	const deliveryId = document.getElementById("editDeliveryId").value;
-	const orderId = document.getElementById("editOrderId").value;
-	const customerName = document.getElementById("editCustomerName").value;
-	const deliveryAddress = document.getElementById("editDeliveryAddress").value;
-	const deliveryStatus = document.getElementById("editDeliveryStatus").value;
-	const estimatedDelivery = document.getElementById(
-		"editEstimatedDelivery"
-	).value;
-
-	// Validate form
-	if (!customerName) {
-		document.getElementById("editCustomerName").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Customer name is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document.getElementById("editCustomerName").classList.remove("is-invalid");
-	}
-
-	if (!deliveryAddress) {
-		document.getElementById("editDeliveryAddress").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Delivery address is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document
-			.getElementById("editDeliveryAddress")
-			.classList.remove("is-invalid");
-	}
-
-	if (!estimatedDelivery) {
-		document
-			.getElementById("editEstimatedDelivery")
-			.classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Estimated delivery date is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document
-			.getElementById("editEstimatedDelivery")
-			.classList.remove("is-invalid");
-	}
-
-	// Show loading state
-	const saveButton = document.getElementById("saveDeliveryChanges");
-	setButtonLoading(saveButton, true);
-
-	// Here you would typically make an AJAX call to update the delivery
-	// For demonstration, we'll just simulate a delay and update the row
-	setTimeout(() => {
-		// Find the delivery row
-		const editButton = document.querySelector(
-			`button.edit-btn[data-delivery-id="${deliveryId}"]`
-		);
-		const deliveryRow = editButton ? editButton.closest("tr") : null;
-
-		if (!deliveryRow) {
-			showNotification(
-				"<strong>Error!</strong> Could not find delivery row to update.",
-				"danger",
-				3000
-			);
-			setButtonLoading(saveButton, false);
-			return;
-		}
-
-		// Update the row with new values
-		deliveryRow.querySelector("td:nth-child(2)").textContent = customerName;
-		deliveryRow.querySelector("td:nth-child(3)").textContent = deliveryAddress;
-
-		// Format date for display (Jan 25, 2024 format)
-		const date = new Date(estimatedDelivery);
-		const monthNames = [
-			"Jan",
-			"Feb",
-			"Mar",
-			"Apr",
-			"May",
-			"Jun",
-			"Jul",
-			"Aug",
-			"Sep",
-			"Oct",
-			"Nov",
-			"Dec",
-		];
-		const formattedDate = `${
-			monthNames[date.getMonth()]
-		} ${date.getDate()}, ${date.getFullYear()}`;
-		deliveryRow.querySelector("td:nth-child(5)").textContent = formattedDate;
-
-		// Update status badge
-		const statusBadge = deliveryRow.querySelector(
-			"td:nth-child(4) .status-badge"
-		);
-		statusBadge.textContent = deliveryStatus;
-
-		// Update status badge class
-		statusBadge.className = "status-badge";
-		if (deliveryStatus === "In Transit") {
-			statusBadge.classList.add("in-transit");
-		} else if (deliveryStatus === "Delivered") {
-			statusBadge.classList.add("delivered");
-		} else if (deliveryStatus === "Pending") {
-			statusBadge.classList.add("pending");
-		}
-
-		// Hide modal with a slight delay for better UX
-		setTimeout(() => {
-			const editModal = bootstrap.Modal.getInstance(
-				document.getElementById("editDeliveryModal")
-			);
-			editModal.hide();
-
-			// Reset loading state
-			setButtonLoading(saveButton, false);
-
-			// Show success message
-			showNotification(
-				`<strong>Success!</strong> Delivery Order ${orderId} has been updated.`,
-				"success",
-				3000
-			);
-
-			// Highlight the updated row
-			deliveryRow.style.transition = "background-color 0.5s ease";
-			deliveryRow.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
-			setTimeout(() => {
-				deliveryRow.style.backgroundColor = "";
-			}, 2000);
-		}, 300);
-	}, 800);
-}
-
-/**
  * Initialize chat message action buttons (edit and delete)
  */
 function initializeChatMessageActions() {
@@ -926,38 +537,30 @@ function saveMessageChanges() {
  * Initialize delete confirmation buttons for all types (product, delivery, message)
  */
 function initializeDeleteConfirmations() {
-	// Product delete confirmation
-	initializeTypeDeleteConfirmation("product", "Product");
-
-	// Delivery delete confirmation
-	initializeTypeDeleteConfirmation("delivery", "Delivery Order");
-
-	// Message delete confirmation
-	initializeTypeDeleteConfirmation("message", "Message");
+	initializeTypeDeleteConfirmation("Product", "product");
+	initializeTypeDeleteConfirmation("Message", "message");
 }
 
 /**
  * Initialize delete confirmation for a specific type
- * @param {string} type - The type of item (product, delivery, message)
+ * @param {string} type - The type of item (product, message)
  * @param {string} displayName - The display name for notifications
  */
 function initializeTypeDeleteConfirmation(type, displayName) {
 	const confirmDeleteBtn = document.getElementById(
-		`confirmDelete${type.charAt(0).toUpperCase() + type.slice(1)}`
+		`confirmDelete${type}`
 	);
 	if (confirmDeleteBtn) {
 		confirmDeleteBtn.addEventListener("click", function () {
 			const itemId = document.getElementById(
-				`delete${type.charAt(0).toUpperCase() + type.slice(1)}Id`
+				`delete${type}Id`
 			).value;
 			let itemName = "";
 
 			// Get appropriate name/identifier based on type
-			if (type === "product") {
+			if (type === "Product") {
 				itemName = document.getElementById("deleteProductName").textContent;
-			} else if (type === "delivery") {
-				itemName = document.getElementById("deleteDeliveryOrder").textContent;
-			} else if (type === "message") {
+			} else if (type === "Message") {
 				itemName = document.getElementById("deleteMessageSender").textContent;
 			}
 
@@ -970,7 +573,7 @@ function initializeTypeDeleteConfirmation(type, displayName) {
 
 			// Find the button with matching ID attribute
 			for (const btn of allDeleteButtons) {
-				if (btn.getAttribute(`data-${type}-id`) === itemId) {
+				if (btn.getAttribute(`data-${displayName}-id`) === itemId) {
 					targetButton = btn;
 					break;
 				}
@@ -983,7 +586,7 @@ function initializeTypeDeleteConfirmation(type, displayName) {
 			}
 
 			if (!itemRow) {
-				console.error(`Could not find row with ${type}-id=${itemId}`);
+				console.error(`Could not find row with ${displayName}-id=${itemId}`);
 				showNotification(
 					`<strong>Error!</strong> Could not find item to delete.`,
 					"danger",
@@ -996,7 +599,7 @@ function initializeTypeDeleteConfirmation(type, displayName) {
 			// Hide the modal immediately
 			const deleteModal = bootstrap.Modal.getInstance(
 				document.getElementById(
-					`delete${type.charAt(0).toUpperCase() + type.slice(1)}Modal`
+					`delete${type}Modal`
 				)
 			);
 			deleteModal.hide();
@@ -1009,11 +612,9 @@ function initializeTypeDeleteConfirmation(type, displayName) {
 
 			// Show success message
 			let successMessage = "";
-			if (type === "product") {
+			if (type === "Product") {
 				successMessage = `<strong>Success!</strong> Product "${itemName}" has been deleted.`;
-			} else if (type === "delivery") {
-				successMessage = `<strong>Success!</strong> Delivery Order ${itemName} has been deleted.`;
-			} else if (type === "message") {
+			} else if (type === "Message") {
 				successMessage = `<strong>Success!</strong> Message from ${itemName} has been deleted.`;
 			}
 
@@ -1075,16 +676,10 @@ function initializeAdminHeader() {
 			// Get the table rows to filter based on the target type
 			let tableRows;
 
-			if (targetType === "list-of-product") {
+			if (targetType === "products") {
 				tableRows = document.querySelectorAll(".product-table tbody tr");
-			} else if (targetType === "delivery-updates") {
-				tableRows = document.querySelectorAll(
-					".admin-table:not(.product-table):not(.chat-table) tbody tr"
-				);
-			} else if (targetType === "chat-responses") {
+			} else if (targetType === "chat-messages") {
 				tableRows = document.querySelectorAll(".chat-table tbody tr");
-			} else if (targetType === "sales-overview") {
-				tableRows = document.querySelectorAll(".sales-table tbody tr");
 			} else {
 				tableRows = document.querySelectorAll(".admin-table tbody tr");
 			}
@@ -1105,7 +700,6 @@ function initializeAdminHeader() {
 			const targetType = this.getAttribute("data-filter-target");
 
 			// Show filter modal based on target type
-			// This would need to be implemented for each specific page
 			showFilterModal(targetType);
 		});
 	});
@@ -1118,50 +712,41 @@ function initializeAdminHeader() {
  * @param {string} targetType - The type of table being filtered
  */
 function filterTableRows(rows, searchValue, targetType) {
-	if (!searchValue) {
-		// If search value is empty, show all rows
-		rows.forEach((row) => (row.style.display = ""));
-		return;
+	let matchCount = 0;
+	
+	if (searchValue === "") {
+		// If search is empty, show all rows
+		rows.forEach((row) => {
+			row.style.display = "";
+			matchCount++;
+		});
+		return matchCount;
 	}
 
-	// Filter rows based on target type
-	rows.forEach((row) => {
-		let text = "";
+	// Convert search to lowercase for case-insensitive search
+	const searchLower = searchValue.toLowerCase();
 
-		if (targetType === "list-of-product") {
-			// For product list, search in product name and SKU
-			const productName = row.querySelector(".product-name")?.textContent || "";
-			const productSku = row.querySelector(".product-sku")?.textContent || "";
-			text = productName + " " + productSku;
-		} else if (targetType === "delivery-updates") {
-			// For delivery updates, search in order ID, customer name, and address
-			const orderId = row.cells[0]?.textContent || "";
-			const customer = row.cells[1]?.textContent || "";
-			const address = row.cells[2]?.textContent || "";
-			text = orderId + " " + customer + " " + address;
-		} else if (targetType === "chat-responses") {
-			// For chat responses, search in timestamp, sender, and message
-			const timestamp = row.cells[0]?.textContent || "";
-			const sender = row.querySelector(".message-sender")?.textContent || "";
-			const message = row.querySelector(".message-text")?.textContent || "";
-			text = timestamp + " " + sender + " " + message;
-		} else if (targetType === "sales-overview") {
-			// For sales overview, search in order ID, customer, and product
-			const cells = row.cells;
-			for (let i = 0; i < cells.length; i++) {
-				text += cells[i].textContent + " ";
-			}
-		} else {
-			// For any other table, search in all cells
-			const cells = row.cells;
-			for (let i = 0; i < cells.length; i++) {
-				text += cells[i].textContent + " ";
-			}
+	rows.forEach((row) => {
+		let match = false;
+		
+		if (targetType === "products") {
+			const productName = row.querySelector(".product-name")?.textContent.toLowerCase() || "";
+			const productSKU = row.querySelector(".product-sku")?.textContent.toLowerCase() || "";
+			const stockLevel = row.querySelector(".stock-badge")?.textContent.toLowerCase() || "";
+			
+			match = productName.includes(searchLower) || 
+				   productSKU.includes(searchLower) || 
+				   stockLevel.includes(searchLower);
+		} else if (targetType === "chat-messages") {
+			const sender = row.querySelector("td:first-child")?.textContent.toLowerCase() || "";
+			const message = row.querySelector(".message-text")?.textContent.toLowerCase() || "";
+			
+			match = sender.includes(searchLower) || message.includes(searchLower);
 		}
 
-		// Show or hide row based on search
-		if (text.toLowerCase().includes(searchValue)) {
+		if (match) {
 			row.style.display = "";
+			matchCount++;
 		} else {
 			row.style.display = "none";
 		}

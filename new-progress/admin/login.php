@@ -26,30 +26,18 @@
                     <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                 </div>
                 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="password" class="form-label">PASSWORD</label>
-                    <div class="input-group password-input-group">
+                    <div class="password-input-group">
                         <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-                        <button class="btn btn-outline-secondary password-toggle" type="button" aria-label="Toggle password visibility">
+                        <button type="button" class="password-toggle" aria-label="Toggle password visibility">
                             <i class="bi bi-eye password-icon"></i>
                         </button>
                     </div>
                 </div>
                 
-                <div class="d-flex align-items-center mb-4 mt-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="remember">
-                        <label class="form-check-label" for="remember">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password ms-auto">Forgot Password?</a>
-                </div>
-                
                 <button type="submit" class="btn btn-login w-100">Login</button>
             </form>
-            
-            <div class="text-center mt-3">
-                <p class="admin-footer">Don't have an account? <a href="#" class="contact-admin">Contact Administrator</a></p>
-            </div>
         </div>
     </div>
 

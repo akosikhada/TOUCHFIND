@@ -82,37 +82,23 @@ body.admin-login {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	border-radius: 0 5px 5px 0;
+	outline: none;
 }
 
-.password-toggle:hover,
+.password-toggle:hover {
+	background-color: rgba(0, 0, 0, 0.03);
+	box-shadow: none;
+}
+
 .password-toggle:focus {
-	background-color: transparent;
+	outline: none;
 	box-shadow: none;
 }
 
 .password-icon {
-	font-size: 16px;
-	color: #666;
-}
-
-.form-check-input {
-	width: 16px;
-	height: 16px;
-	margin-top: 0.2em;
-}
-
-.form-check-input:checked {
-	background-color: #d32f2f;
-	border-color: #d32f2f;
-}
-
-.form-check-label {
-	padding-left: 4px;
-}
-
-.forgot-password {
-	color: #d32f2f;
-	padding-right: 2px;
+	font-size: 18px;
+	color: #777;
 }
 
 .btn-login {
@@ -141,24 +127,6 @@ body.admin-login {
 	box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3);
 }
 
-.admin-footer {
-	font-size: 14px;
-	color: #666;
-	margin-top: 24px;
-}
-
-.contact-admin {
-	color: #d32f2f;
-	text-decoration: none;
-	font-weight: 500;
-	transition: all 0.3s ease;
-}
-
-.contact-admin:hover {
-	color: #9c1f1f;
-	text-decoration: underline;
-}
-
 /* Responsive adjustments for admin login */
 @media (max-width: 768px) {
 	.login-card {
@@ -180,17 +148,6 @@ body.admin-login {
 	.admin-subtitle {
 		font-size: 0.85rem;
 	}
-
-	.d-flex.justify-content-between.align-items-center.mb-4 {
-		flex-direction: column;
-		align-items: flex-start !important;
-		gap: 1rem;
-	}
-
-	.forgot-password {
-		display: inline-block;
-		margin-top: 0.5rem;
-	}
 }
 
 @media (max-width: 380px) {
@@ -209,12 +166,6 @@ body.admin-login {
 
 	.form-label {
 		font-size: 0.85rem;
-	}
-
-	.form-check-label,
-	.forgot-password,
-	.admin-footer {
-		font-size: 0.8rem;
 	}
 }
 
@@ -827,6 +778,10 @@ td.action-buttons:after {
 	box-shadow: 0 2px 4px rgba(195, 36, 36, 0.1);
 }
 
+.delete-btn i {
+	font-size: 1rem;
+}
+
 /* Add Product Form Styles */
 .product-form-container {
 	max-width: 1200px;
@@ -924,143 +879,6 @@ td.action-buttons:after {
 	color: white;
 	transform: translateY(-2px);
 	box-shadow: 0 4px 8px rgba(195, 36, 36, 0.2);
-}
-
-/* Sales Dashboard Styles */
-.overview-card {
-	background-color: white;
-	border: none;
-	border-radius: 8px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-	height: 100%;
-}
-
-.overview-title {
-	font-size: 0.9rem;
-	color: #6c757d;
-	margin-bottom: 0.8rem;
-	font-weight: 500;
-}
-
-.overview-value {
-	font-size: 1.75rem;
-	font-weight: 700;
-	color: #333;
-	margin-bottom: 0;
-}
-
-.overview-change {
-	font-size: 0.85rem;
-	font-weight: 600;
-	padding: 0.25rem 0.5rem;
-	border-radius: 15px;
-	display: inline-flex;
-	align-items: center;
-}
-
-.overview-change i {
-	font-size: 0.75rem;
-	margin-right: 2px;
-}
-
-.overview-change.positive {
-	background-color: #e8f7ef;
-	color: #1e9c65;
-}
-
-.overview-change.negative {
-	background-color: #fce8e8;
-	color: #d32f2f;
-}
-
-.chart-container {
-	width: 100%;
-	height: 400px;
-	position: relative;
-	margin-top: 1rem;
-}
-
-.sales-chart {
-	width: 100%;
-	height: 100%;
-}
-
-.card-title {
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: #333;
-}
-
-.btn-group .btn-outline-secondary {
-	color: #555;
-	border-color: #dee2e6;
-	background-color: transparent;
-	font-size: 0.85rem;
-	padding: 0.25rem 0.75rem;
-}
-
-.btn-group .btn-outline-secondary:hover {
-	background-color: #f8f9fa;
-	color: #333;
-}
-
-.btn-group .btn-outline-secondary.active {
-	background-color: #c32424;
-	color: white;
-	border-color: #c32424;
-}
-
-.sales-table th {
-	font-weight: 600;
-	color: #495057;
-	font-size: 0.9rem;
-	padding: 0.75rem 1rem;
-	background-color: #f8f9fa;
-	border-bottom-width: 1px;
-}
-
-.sales-table td {
-	padding: 0.75rem 1rem;
-	vertical-align: middle;
-	border-color: #dee2e6;
-}
-
-.status-badge.completed {
-	background-color: #e8f7ef;
-	color: #1e9c65;
-}
-
-.status-badge.pending {
-	background-color: #fff6dd;
-	color: #b68d26;
-}
-
-.status-badge.failed {
-	background-color: #fce8e8;
-	color: #d32f2f;
-}
-
-.btn-icon {
-	width: 30px;
-	height: 30px;
-	border-radius: 4px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: transparent;
-	color: #6c757d;
-	padding: 0;
-	border: none;
-}
-
-.btn-icon:hover {
-	background-color: #f5f5f5;
-	color: #333;
-}
-
-.entries-info {
-	color: #6c757d;
-	font-size: 0.9rem;
 }
 
 /* Animation keyframes */
@@ -1346,14 +1164,12 @@ td.action-buttons:after {
 }
 
 .delete-message {
-	color: #6c757d;
 	font-size: 0.95rem;
 	max-width: 90%;
 	margin: 0 auto;
 }
 
 #confirmDeleteProduct,
-#confirmDeleteDelivery,
 #confirmDeleteMessage {
 	background-color: #dc3545;
 	border-color: #dc3545;
@@ -1361,7 +1177,6 @@ td.action-buttons:after {
 }
 
 #confirmDeleteProduct:hover,
-#confirmDeleteDelivery:hover,
 #confirmDeleteMessage:hover {
 	background-color: #c82333;
 	border-color: #bd2130;
@@ -1402,9 +1217,7 @@ td.action-buttons:after {
 }
 
 .password-input-group .form-control {
-	border-right: none;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
+	border-radius: 5px;
 	width: 100%;
 	padding-right: 40px;
 }
@@ -1421,33 +1234,23 @@ td.action-buttons:after {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	border-radius: 0 5px 5px 0;
+	outline: none;
 }
 
-.password-toggle:hover,
+.password-toggle:hover {
+	background-color: rgba(0, 0, 0, 0.03);
+	box-shadow: none;
+}
+
 .password-toggle:focus {
-	background-color: transparent;
+	outline: none;
 	box-shadow: none;
 }
 
 .password-icon {
-	font-size: 16px;
-	color: #666;
-}
-
-/* Fix for Remember Me and Forgot Password */
-.form-check-input {
-	width: 16px;
-	height: 16px;
-	margin-top: 0.2em;
-}
-
-.form-check-label {
-	padding-left: 4px;
-}
-
-.forgot-password {
-	color: #d32f2f;
-	padding-right: 2px;
+	font-size: 18px;
+	color: #777;
 }
 
 /* Tablet specific adjustments */
