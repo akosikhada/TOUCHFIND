@@ -210,6 +210,7 @@ body.admin-login {
 	background-color: #f5f5f5;
 	color: #333;
 	overflow-x: hidden;
+	display: flex;
 }
 
 /* Sidebar */
@@ -217,9 +218,15 @@ body.admin-login {
 	width: 270px;
 	background-color: #c32424;
 	min-height: 100vh;
+	height: 100vh;
 	padding: 1.5rem 1rem;
 	display: flex;
 	flex-direction: column;
+	position: fixed;
+	left: 0;
+	top: 0;
+	overflow-y: auto;
+	z-index: 1000;
 }
 
 .admin-brand {
@@ -288,6 +295,9 @@ body.admin-login {
 	flex: 1;
 	background-color: #f5f5f5;
 	overflow-x: hidden;
+	margin-left: 270px;
+	width: calc(100% - 270px);
+	min-height: 100vh;
 }
 
 .admin-page-title {
@@ -580,6 +590,11 @@ td.action-buttons:after {
 	.admin-sidebar {
 		width: 220px;
 	}
+	
+	.admin-main {
+		margin-left: 220px;
+		width: calc(100% - 220px);
+	}
 
 	.search-box {
 		width: 200px;
@@ -596,7 +611,11 @@ td.action-buttons:after {
 	.admin-sidebar {
 		width: 100%;
 		min-height: auto;
+		height: auto;
 		padding: 1rem;
+		position: relative;
+		left: auto;
+		top: auto;
 	}
 
 	.admin-nav {
@@ -612,6 +631,10 @@ td.action-buttons:after {
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
+	
+	.admin-logout {
+		display: none; /* Hide logout on mobile as it's shown in horizontal nav */
+	}
 
 	.admin-brand {
 		margin-bottom: 1rem !important;
@@ -624,6 +647,7 @@ td.action-buttons:after {
 	.admin-main {
 		padding-top: 1rem;
 		width: 100%;
+		margin-left: 0;
 		overflow-x: hidden;
 	}
 
