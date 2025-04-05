@@ -218,6 +218,8 @@ body.admin-login {
 	background-color: #c32424;
 	min-height: 100vh;
 	padding: 1.5rem 1rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .admin-brand {
@@ -229,6 +231,7 @@ body.admin-login {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	flex-grow: 1;
 }
 
 .admin-nav .nav-link {
@@ -255,6 +258,29 @@ body.admin-login {
 .nav-icon {
 	margin-right: 0.8rem;
 	font-size: 1.2rem;
+}
+
+/* Admin Logout Button */
+.admin-logout {
+	margin-top: auto;
+	padding-top: 1.5rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-link {
+	color: rgba(255, 255, 255, 0.85);
+	display: flex;
+	align-items: center;
+	padding: 0.75rem 1rem;
+	border-radius: 5px;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	font-weight: 500;
+}
+
+.logout-link:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
 }
 
 /* Main Content Area */

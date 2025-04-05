@@ -19,3 +19,10 @@
         CHAT
     </a>
 </nav>
+
+<div class="admin-logout">
+    <a href="login.php" class="logout-link">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        LOGOUT
+    </a>
+</div>
