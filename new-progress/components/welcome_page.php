@@ -48,7 +48,7 @@
             <h1 class="title">TOUCHFIND</h1>
             <p class="subtitle mt-3"><i>An interactive kiosk system for effortless product discovery and navigation</i></p>
             <p class="subtitle mb-5">Touch to continue</p>
-            
+
             <div class="continue-button d-flex justify-content-center align-items-center mx-auto">
                 <img src="../assets/arrow-icon.png" alt="Continue" class="arrow-icon">
             </div>
@@ -57,20 +57,6 @@
 
     <!-- Bootstrap JS -->
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.querySelector('.continue-button').addEventListener('click', function() {
-            window.location.href = 'categories.php';
-        });
-        
-        // Add touch events for mobile
-        document.querySelector('.continue-button').addEventListener('touchstart', function() {
-            this.style.backgroundColor = '#444';
-        });
-        
-        document.querySelector('.continue-button').addEventListener('touchend', function() {
-            this.style.backgroundColor = '#333';
-            window.location.href = 'categories.php';
-        });
-    </script>
+    <script src="../js/welcome_page.js" defer></script>
 </body>
 </html>
