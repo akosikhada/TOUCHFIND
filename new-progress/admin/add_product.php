@@ -10,6 +10,51 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Admin CSS -->
     <link href="css/admin.css" rel="stylesheet">
+    <style>
+        /* Additional responsive styles */
+        @media (max-width: 767.98px) {
+            .admin-main {
+                padding-left: 0;
+            }
+            
+            .product-form-card {
+                margin: 0 -10px;
+                border-radius: 0;
+            }
+            
+            .container-fluid {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+            
+            /* Stack form fields in a single column on mobile */
+            .row > [class*="col-"] {
+                margin-bottom: 0;
+            }
+            
+            /* Override Bootstrap column spacing */
+            .row {
+                margin-left: -5px;
+                margin-right: -5px;
+            }
+            
+            .product-image-placeholder {
+                height: 150px;
+            }
+        }
+        
+        /* Super small screens */
+        @media (max-width: 359.98px) {
+            .btn-create-product {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
     <?php include 'components/admin_header.php'; ?>
@@ -29,7 +74,7 @@
                     <div class="card product-form-card">
                         <div class="card-body p-4">
                             <form action="#" method="post" enctype="multipart/form-data">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <div class="mb-4">
                                             <label for="productName" class="form-label">PRODUCT NAME</label>

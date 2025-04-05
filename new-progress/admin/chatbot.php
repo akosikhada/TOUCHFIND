@@ -10,6 +10,224 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Admin CSS -->
     <link href="css/admin.css" rel="stylesheet">
+    <style>
+        /* Responsive table styles */
+        @media (max-width: 991.98px) {
+            .admin-main {
+                padding-left: 0;
+            }
+            
+            .admin-table-container {
+                overflow-x: auto;
+                margin: 0 -15px;
+                padding: 0 15px;
+            }
+            
+            /* Ensure table doesn't overflow container */
+            .table-responsive {
+                min-width: 100%;
+            }
+            
+            /* Add spacing between pagination components */
+            .pagination {
+                margin-top: 10px;
+            }
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 767.98px) {
+            .admin-table thead {
+                display: none; /* Hide table headers on mobile */
+            }
+            
+            .admin-table tbody tr {
+                display: block;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: 0.25rem;
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+            }
+            
+            .admin-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 0.5rem 0.5rem;
+                text-align: right;
+            }
+            
+            /* Create column headers on mobile */
+            .admin-table tbody td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                padding-right: 0.5rem;
+            }
+            
+            /* Special styling for image column */
+            .admin-table td:first-child {
+                display: block;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .admin-table td:first-child:before {
+                display: none;
+            }
+            
+            /* Special styling for status badges */
+            .admin-table td .stock-badge {
+                margin-left: auto;
+            }
+            
+            /* Action buttons centered */
+            .admin-table td.action-buttons {
+                justify-content: center;
+            }
+            
+            .admin-table td.action-buttons:before {
+                display: none;
+            }
+            
+            /* Chat card specific styles - mobile first approach */
+            .chat-card {
+                display: block;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: 0.25rem;
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+                background-color: #fff;
+            }
+            
+            .chat-card-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid rgba(0,0,0,.05);
+            }
+            
+            .chat-card-row:last-of-type {
+                border-bottom: none;
+            }
+            
+            .chat-card-label {
+                font-weight: 600;
+                text-align: left;
+                padding-right: 0.5rem;
+                flex: 0 0 90px;
+            }
+            
+            .chat-card-value {
+                text-align: right;
+                flex: 1;
+            }
+            
+            .chat-card-actions {
+                display: flex;
+                justify-content: flex-end;
+                padding-top: 0.5rem;
+                border-top: 1px solid rgba(0,0,0,.05);
+                margin-top: 0.5rem;
+            }
+            
+            .chat-card-actions .btn {
+                margin-left: 0.5rem;
+            }
+            
+            /* Improve pagination on small screens */
+            .d-flex.justify-content-between.align-items-center.mt-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .items-per-page {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            nav[aria-label="Page navigation"] {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+        }
+        
+        /* Between small and medium screens */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .message-text {
+                max-width: 100%;
+                word-break: break-word;
+            }
+            
+            .chat-message {
+                width: 100%;
+            }
+        }
+        
+        /* Ensure chat message wrapping at all screen sizes */
+        .message-text {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+        
+        /* Edit message modal responsive */
+        @media (max-width: 767.98px) {
+            .modal-body textarea {
+                min-height: 100px;
+            }
+        }
+        
+        /* Extra overrides for chat message text that's displaying vertically */
+        .message-text {
+            white-space: normal !important;
+            display: block !important;
+            width: 100% !important;
+            word-break: break-word !important;
+        }
+        
+        /* Message text styling */
+        .message-text {
+            background-color: #f8f9fa;
+            padding: 0.5rem !important;
+            border-radius: 0.25rem;
+            margin-top: 0.25rem;
+        }
+        
+        p.message-text {
+            white-space: normal !important;
+            word-break: normal !important;
+            display: block !important;
+            width: 100% !important;
+            text-orientation: mixed !important;
+            writing-mode: horizontal-tb !important;
+            letter-spacing: normal !important;
+        }
+        
+        /* Delete these unnecessary card styles */
+        .chat-card-header,
+        .chat-card-body,
+        .chat-card-body strong,
+        .chat-card-body .rounded,
+        .chat-card-footer {
+            display: none;
+        }
+        
+        .btn-sm.mobile-edit-btn, .btn-sm.mobile-delete-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.2rem;
+        }
+        
+        .mobile-edit-btn i, .mobile-delete-btn i {
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body>
     <?php include 'components/edit_product.php'; ?>
@@ -30,7 +248,58 @@
                 <!-- Chat Responses Table -->
                 <div class="admin-table-container">
                     <div class="table-responsive">
-                        <table class="table admin-table chat-table">
+                        <!-- Simple card-based approach for chat messages on mobile -->
+                        <div class="chat-messages-mobile d-md-none">
+                            <?php
+                            $messages = [
+                                ['timestamp' => '2024-01-20 09:15', 'sender' => 'Support Bot', 'text' => 'Hello! How can I assist you today?', 'id' => '1'],
+                                ['timestamp' => '2024-01-20 09:16', 'sender' => 'Customer', 'text' => 'I need help with my order #TL-1001', 'id' => '2'],
+                                ['timestamp' => '2024-01-20 09:16', 'sender' => 'Support Bot', 'text' => 'I\'ll help you track your order. Let me check the status.', 'id' => '3'],
+                                ['timestamp' => '2024-01-20 09:17', 'sender' => 'Support Bot', 'text' => 'Your order is currently in transit and will be delivered today.', 'id' => '4'],
+                                ['timestamp' => '2024-01-20 09:18', 'sender' => 'Customer', 'text' => 'Thank you for the information!', 'id' => '5']
+                            ];
+                            
+                            foreach ($messages as $message):
+                            ?>
+                            <div class="chat-card" data-id="<?php echo $message['id']; ?>">
+                                <div class="chat-card-row">
+                                    <div class="chat-card-label">TIMESTAMP</div>
+                                    <div class="chat-card-value"><?php echo $message['timestamp']; ?></div>
+                                </div>
+                                <div class="chat-card-row">
+                                    <div class="chat-card-label">SENDER</div>
+                                    <div class="chat-card-value"><?php echo $message['sender']; ?></div>
+                                </div>
+                                <div class="chat-card-row">
+                                    <div class="chat-card-label">MESSAGE</div>
+                                    <div class="chat-card-value">
+                                        <div class="message-text p-2 bg-light rounded"><?php echo $message['text']; ?></div>
+                                    </div>
+                                </div>
+                                <div class="chat-card-actions">
+                                    <button class="btn btn-action edit-btn mobile-edit-btn" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editMessageModal" 
+                                            data-id="<?php echo $message['id']; ?>"
+                                            data-timestamp="<?php echo $message['timestamp']; ?>"
+                                            data-sender="<?php echo $message['sender']; ?>"
+                                            data-message="<?php echo htmlspecialchars($message['text']); ?>">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-action delete-btn mobile-delete-btn" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#mobileDeleteMessageModal" 
+                                            data-id="<?php echo $message['id']; ?>"
+                                            data-sender="<?php echo $message['sender']; ?>">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <!-- Regular table for larger screens -->
+                        <table class="table admin-table chat-table d-none d-md-table">
                             <colgroup>
                                 <col style="width: 15%;">
                                 <col style="width: 70%;">
@@ -44,63 +313,63 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>2024-01-20 09:15</td>
-                                    <td>
+                                <tr class="chat-row" data-id="1">
+                                    <td data-label="TIMESTAMP">2024-01-20 09:15</td>
+                                    <td data-label="MESSAGE">
                                         <div class="chat-message">
-                                            <div class="message-sender">Support Bot</div>
-                                            <div class="message-text">Hello! How can I assist you today?</div>
+                                            <span class="message-sender">Support Bot</span>
+                                            <p class="message-text">Hello! How can I assist you today?</p>
                                         </div>
                                     </td>
-                                    <td class="action-buttons">
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('message', '1'); ?>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2024-01-20 09:16</td>
-                                    <td>
+                                <tr class="chat-row" data-id="2">
+                                    <td data-label="TIMESTAMP">2024-01-20 09:16</td>
+                                    <td data-label="MESSAGE">
                                         <div class="chat-message">
-                                            <div class="message-sender">Customer</div>
-                                            <div class="message-text">I need help with my order #TL-1001</div>
+                                            <span class="message-sender">Customer</span>
+                                            <p class="message-text">I need help with my order #TL-1001</p>
                                         </div>
                                     </td>
-                                    <td class="action-buttons">
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('message', '2'); ?>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2024-01-20 09:16</td>
-                                    <td>
+                                <tr class="chat-row" data-id="3">
+                                    <td data-label="TIMESTAMP">2024-01-20 09:16</td>
+                                    <td data-label="MESSAGE">
                                         <div class="chat-message">
-                                            <div class="message-sender">Support Bot</div>
-                                            <div class="message-text">I'll help you track your order. Let me check the status.</div>
+                                            <span class="message-sender">Support Bot</span>
+                                            <p class="message-text">I'll help you track your order. Let me check the status.</p>
                                         </div>
                                     </td>
-                                    <td class="action-buttons">
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('message', '3'); ?>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2024-01-20 09:17</td>
-                                    <td>
+                                <tr class="chat-row" data-id="4">
+                                    <td data-label="TIMESTAMP">2024-01-20 09:17</td>
+                                    <td data-label="MESSAGE">
                                         <div class="chat-message">
-                                            <div class="message-sender">Support Bot</div>
-                                            <div class="message-text">Your order is currently in transit and will be delivered today.</div>
+                                            <span class="message-sender">Support Bot</span>
+                                            <p class="message-text">Your order is currently in transit and will be delivered today.</p>
                                         </div>
                                     </td>
-                                    <td class="action-buttons">
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('message', '4'); ?>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2024-01-20 09:18</td>
-                                    <td>
+                                <tr class="chat-row" data-id="5">
+                                    <td data-label="TIMESTAMP">2024-01-20 09:18</td>
+                                    <td data-label="MESSAGE">
                                         <div class="chat-message">
-                                            <div class="message-sender">Customer</div>
-                                            <div class="message-text">Thank you for the information!</div>
+                                            <span class="message-sender">Customer</span>
+                                            <p class="message-text">Thank you for the information!</p>
                                         </div>
                                     </td>
-                                    <td class="action-buttons">
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('message', '5'); ?>
                                     </td>
                                 </tr>
@@ -147,6 +416,194 @@
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Admin JS -->
     <script src="js/admin.js"></script>
+    
+    <!-- Add direct delete modal for mobile view -->
+    <div class="modal fade" id="mobileDeleteMessageModal" tabindex="-1" aria-labelledby="mobileDeleteMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="mobileDeleteMessageModalLabel">CONFIRM DELETION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div class="delete-icon-container mb-4">
+                        <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="delete-title mb-3">Are you sure?</h5>
+                    <p class="delete-message mb-0">
+                        You are about to delete a message from <span id="mobileSenderName" class="fw-bold"></span>. This action cannot be undone.
+                    </p>
+                    <input type="hidden" id="mobileMessageId">
+                </div>
+                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="mobileConfirmDelete">
+                        <i class="bi bi-trash me-2"></i>Delete Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom script for chat buttons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile edit button click handler
+            document.querySelectorAll('.mobile-edit-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // Get data from data attributes
+                    const id = this.getAttribute('data-id');
+                    const timestamp = this.getAttribute('data-timestamp');
+                    const sender = this.getAttribute('data-sender');
+                    const message = this.getAttribute('data-message');
+                    
+                    // Populate the edit modal
+                    document.getElementById('editMessageId').value = id;
+                    document.getElementById('editTimestamp').value = timestamp;
+                    
+                    // Set sender dropdown
+                    const senderSelect = document.getElementById('editSender');
+                    for (let i = 0; i < senderSelect.options.length; i++) {
+                        if (senderSelect.options[i].value === sender) {
+                            senderSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    document.getElementById('editMessageText').value = message;
+                });
+            });
+            
+            // Mobile delete button click handler - using the direct mobile delete modal
+            document.querySelectorAll('.mobile-delete-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const sender = this.getAttribute('data-sender');
+                    
+                    // Set values in the mobile delete modal
+                    document.getElementById('mobileMessageId').value = id;
+                    document.getElementById('mobileSenderName').textContent = sender;
+                });
+            });
+            
+            // Mobile confirm delete button handler
+            document.getElementById('mobileConfirmDelete').addEventListener('click', function() {
+                const id = document.getElementById('mobileMessageId').value;
+                const sender = document.getElementById('mobileSenderName').textContent;
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('mobileDeleteMessageModal'));
+                modal.hide();
+                
+                // Remove the message card from the DOM (simulate deletion)
+                const card = document.querySelector(`.chat-card[data-id="${id}"]`);
+                if (card) {
+                    card.remove();
+                }
+                
+                // Show success notification with consistent format
+                showNotification(`Success! Message from ${sender} has been deleted.`);
+            });
+            
+            // Function to show notification
+            function showNotification(message, type = 'success') {
+                // Clear any existing notifications first to avoid duplicates
+                const notificationContainer = document.getElementById('notifications-container');
+                notificationContainer.innerHTML = '';
+                
+                // Create the new notification
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type} alert-dismissible fade show`;
+                notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                notificationContainer.appendChild(notification);
+                
+                // Auto dismiss after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+            
+            // Desktop table edit button handler
+            document.querySelectorAll('.edit-btn, [data-bs-target="#editMessageModal"]:not(.mobile-edit-btn)').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // For desktop view only
+                    if (this.closest('tr')) {
+                        const row = this.closest('tr');
+                        const id = row.dataset.id;
+                        const timestamp = row.querySelector('td[data-label="TIMESTAMP"]').textContent.trim();
+                        const sender = row.querySelector('.message-sender').textContent.trim();
+                        const messageText = row.querySelector('.message-text').textContent.trim();
+                        
+                        // Populate the modal
+                        document.getElementById('editMessageId').value = id;
+                        document.getElementById('editTimestamp').value = timestamp;
+                        
+                        // Set the correct sender option
+                        const senderSelect = document.getElementById('editSender');
+                        for (let i = 0; i < senderSelect.options.length; i++) {
+                            if (senderSelect.options[i].value === sender) {
+                                senderSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                        
+                        document.getElementById('editMessageText').value = messageText;
+                    }
+                });
+            });
+            
+            // Desktop table delete button handler
+            document.querySelectorAll('.delete-btn, [data-bs-target="#deleteMessageModal"]:not(.mobile-delete-btn)').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (this.closest('tr')) {
+                        const row = this.closest('tr');
+                        const id = row.dataset.id;
+                        const sender = row.querySelector('.message-sender').textContent.trim();
+                        
+                        // Set the message ID in the hidden field
+                        const deleteModal = document.getElementById('deleteMessageModal');
+                        const hiddenInput = deleteModal.querySelector('#deleteMessageId');
+                        if (hiddenInput) {
+                            hiddenInput.value = id;
+                        }
+                        
+                        // Set the sender name in the modal message
+                        const senderSpan = deleteModal.querySelector('#deleteMessageSender');
+                        if (senderSpan) {
+                            senderSpan.textContent = sender;
+                        }
+                    }
+                });
+            });
+            
+            // Add confirmation handler for desktop delete button
+            document.getElementById('confirmDeleteMessage').addEventListener('click', function() {
+                const id = document.getElementById('deleteMessageId').value;
+                
+                // Get the sender from the modal
+                const sender = document.getElementById('deleteMessageSender').textContent;
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteMessageModal'));
+                modal.hide();
+                
+                // Remove the message row from the DOM (simulate deletion)
+                const row = document.querySelector(`tr[data-id="${id}"]`);
+                if (row) {
+                    row.remove();
+                }
+                
+                // Show success notification with consistent format
+                showNotification(`Success! Message from ${sender} has been deleted.`);
+            });
+        });
+    </script>
     
     <!-- Edit Message Modal -->
     <div class="modal fade" id="editMessageModal" tabindex="-1" aria-labelledby="editMessageModalLabel" aria-hidden="true">

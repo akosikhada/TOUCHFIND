@@ -422,11 +422,6 @@ body.admin-login {
 	border-bottom: none;
 }
 
-.admin-table th:first-child,
-.admin-table td:first-child {
-	padding-left: 2rem;
-}
-
 .admin-table th:last-child,
 .admin-table td:last-child {
 	padding-right: 2rem;
@@ -710,10 +705,6 @@ td.action-buttons:after {
 	padding: 1.25rem 1.5rem;
 	vertical-align: middle;
 	border-bottom: 1px solid #dee2e6;
-}
-
-.product-table td:first-child {
-	padding-left: 2rem;
 }
 
 .product-table td:last-child {

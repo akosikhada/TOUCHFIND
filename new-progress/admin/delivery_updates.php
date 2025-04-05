@@ -10,6 +10,100 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Admin CSS -->
     <link href="css/admin.css" rel="stylesheet">
+    <style>
+        /* Responsive table styles */
+        @media (max-width: 991.98px) {
+            .admin-main {
+                padding-left: 0;
+            }
+            
+            .admin-table-container {
+                overflow-x: auto;
+                margin: 0 -15px;
+                padding: 0 15px;
+            }
+            
+            /* Hide less important columns on medium screens */
+            table.admin-table colgroup {
+                display: none;
+            }
+            
+            /* Ensure table doesn't overflow container */
+            .table-responsive {
+                min-width: 100%;
+            }
+            
+            /* Add spacing between pagination components */
+            .pagination {
+                margin-top: 10px;
+            }
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 767.98px) {
+            /* Card-based layout for mobile */
+            .admin-table thead {
+                display: none; /* Hide table headers on mobile */
+            }
+            
+            .admin-table tbody tr {
+                display: block;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: 0.25rem;
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+            }
+            
+            .admin-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                /* border: none; */
+                padding: 0.5rem 0.5rem;
+                text-align: right;
+            }
+            
+            /* Create column headers on mobile */
+            .admin-table tbody td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                padding-right: 0.5rem;
+            }
+            
+            /* Special styling for status badges */
+            .admin-table td .status-badge {
+                margin-left: auto;
+            }
+            
+            /* Action buttons centered */
+            .admin-table td.action-buttons {
+                justify-content: center;
+            }
+            
+            .admin-table td.action-buttons:before {
+                display: none;
+            }
+            
+            /* Improve pagination on small screens */
+            .d-flex.justify-content-between.align-items-center.mt-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .items-per-page {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            nav[aria-label="Page navigation"] {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <?php include 'components/edit_product.php'; ?>
@@ -129,12 +223,12 @@
                                 
                                 foreach ($deliveries as $delivery): ?>
                                 <tr>
-                                    <td><?php echo $delivery['order_id']; ?></td>
-                                    <td><?php echo $delivery['customer']; ?></td>
-                                    <td><?php echo $delivery['address']; ?></td>
-                                    <td><span class="status-badge <?php echo $delivery['class']; ?>"><?php echo $delivery['status']; ?></span></td>
-                                    <td><?php echo $delivery['date']; ?></td>
-                                    <td class="action-buttons">
+                                    <td data-label="ORDER ID"><?php echo $delivery['order_id']; ?></td>
+                                    <td data-label="CUSTOMER"><?php echo $delivery['customer']; ?></td>
+                                    <td data-label="ADDRESS"><?php echo $delivery['address']; ?></td>
+                                    <td data-label="STATUS"><span class="status-badge <?php echo $delivery['class']; ?>"><?php echo $delivery['status']; ?></span></td>
+                                    <td data-label="DELIVERY DATE"><?php echo $delivery['date']; ?></td>
+                                    <td class="action-buttons" data-label="ACTIONS">
                                         <?php echo renderActionButtons('delivery', $delivery['id']); ?>
                                     </td>
                                 </tr>
@@ -194,7 +288,7 @@
                 <div class="modal-body p-4">
                     <form id="editDeliveryForm">
                         <input type="hidden" id="editDeliveryId" name="deliveryId">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="mb-4">
                                     <label for="editOrderId" class="form-label">ORDER ID</label>

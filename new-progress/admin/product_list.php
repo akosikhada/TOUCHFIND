@@ -10,6 +10,127 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Admin CSS -->
     <link href="css/admin.css" rel="stylesheet">
+    <style>
+        /* Responsive table styles */
+        @media (max-width: 991.98px) {
+            .admin-main {
+                padding-left: 0;
+            }
+            
+            .admin-table-container {
+                overflow-x: auto;
+                margin: 0 -15px;
+                padding: 0 15px;
+            }
+            
+            /* Ensure table doesn't overflow container */
+            .table-responsive {
+                min-width: 100%;
+            }
+            
+            /* Add spacing between pagination components */
+            .pagination {
+                margin-top: 10px;
+            }
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 767.98px) {
+            .admin-table thead {
+                display: none; /* Hide table headers on mobile */
+            }
+            
+            .admin-table tbody tr {
+                display: block;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: 0.25rem;
+                margin-bottom: 1.5rem; /* Increased bottom margin for more space */
+                padding: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+            }
+            
+            .admin-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 0.5rem 0.5rem;
+                text-align: right;
+            }
+            
+            /* Create column headers on mobile */
+            .admin-table tbody td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                padding-right: 0.5rem;
+            }
+            
+            /* Special styling for image column */
+            .admin-table td:first-child {
+                display: block;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .admin-table td:first-child:before {
+                display: none;
+            }
+            
+            .product-image {
+                width: 100%;
+                max-width: 100px;
+                margin: 0 auto;
+            }
+            
+            /* Special styling for status badges */
+            .admin-table td .stock-badge {
+                margin-left: auto;
+            }
+            
+            /* Action buttons centered */
+            .admin-table td.action-buttons {
+                justify-content: center;
+            }
+            
+            .admin-table td.action-buttons:before {
+                display: none;
+            }
+            
+            /* Improve pagination on small screens */
+            .d-flex.justify-content-between.align-items-center.mt-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .items-per-page {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            
+            nav[aria-label="Page navigation"] {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+        }
+        
+        /* Edit product modal responsive */
+        @media (max-width: 767.98px) {
+            .modal-body .row > .col-md-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .edit-image-placeholder {
+                height: 150px;
+            }
+        }
+        
+        /* Add bottom padding to the container */
+        .admin-table-container {
+            padding-bottom: 2rem;
+        }
+    </style>
 </head>
 <body>
     <?php include 'components/edit_product.php'; ?>
@@ -94,21 +215,21 @@
                                 
                                 foreach ($products as $product): ?>
                                 <tr>
-                                    <td>
+                                    <td data-label="IMAGE">
                                         <div class="product-image">
                                             <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-fluid">
                                         </div>
                                     </td>
-                                    <td>
+                                    <td data-label="PRODUCT">
                                         <div class="product-name"><?php echo $product['name']; ?></div>
                                         <div class="product-sku">SKU: <?php echo $product['id']; ?></div>
                                     </td>
-                                    <td>
+                                    <td data-label="STOCK">
                                         <span class="stock-badge <?php echo $product['class']; ?>"><?php echo $product['stock']; ?></span>
                                     </td>
-                                    <td><?php echo $product['shelf']; ?></td>
-                                    <td>$<?php echo number_format($product['price'], 2); ?></td>
-                                    <td class="action-buttons no-border" style="border-bottom: none; border-top: none;">
+                                    <td data-label="LOCATION"><?php echo $product['shelf']; ?></td>
+                                    <td data-label="PRICE">$<?php echo number_format($product['price'], 2); ?></td>
+                                    <td class="action-buttons no-border" style="border-bottom: none; border-top: none;" data-label="ACTIONS">
                                         <div style="border: none; background: transparent;">
                                             <?php echo renderActionButtons('product', $product['id']); ?>
                                         </div>
@@ -170,7 +291,7 @@
                 <div class="modal-body p-4">
                     <form id="editProductForm">
                         <input type="hidden" id="editProductId" name="productId">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="mb-4">
                                     <label for="editProductName" class="form-label">PRODUCT NAME</label>
