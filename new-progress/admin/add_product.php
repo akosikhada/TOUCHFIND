@@ -1,3 +1,56 @@
+<?php
+// Include database connection
+include 'components/db_connection.php'; // Adjust the path if necessary
+
+// Initialize variables
+$message = "";
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $productName = $_POST['productName'];
+    $stock = $_POST['stock'];
+    $shelfLocation = $_POST['shelfLocation'];
+    $price = $_POST['price'];
+    $category = $_POST['category'];
+    $description = $_POST['description'];
+    $imageName = "";
+
+    // Handle image upload
+    if (isset($_FILES['productImage']) && $_FILES['productImage']['error'] === UPLOAD_ERR_OK) {
+        $imageName = time() . '_' . basename($_FILES['productImage']['name']);
+        $targetDir = "products/";
+        $targetFile = $targetDir . $imageName;
+
+        if (!move_uploaded_file($_FILES['productImage']['tmp_name'], $targetFile)) {
+            $message = "Error uploading the image.";
+        }
+    }
+
+    // Insert product into the database
+    if (empty($message)) {
+        $stmt = $conn->prepare("INSERT INTO products (product_name, stock, shelf_location, price, category_id, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisdiss", $productName, $stock, $shelfLocation, $price, $category, $description, $imageName);
+
+        if ($stmt->execute()) {
+            $message = "Product added successfully!";
+        } else {
+            $message = "Error adding product: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+}
+
+// Fetch categories
+$categories = [];
+$result = $conn->query("SELECT category_id, category_name FROM categories");
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,27 +126,42 @@
                 <div class="product-form-container">
                     <div class="card product-form-card">
                         <div class="card-body p-4">
-                            <form action="#" method="post" enctype="multipart/form-data">
+                            <?php if (!empty($message)): ?>
+                                <div class="alert alert-info"><?php echo $message; ?></div>
+                            <?php endif; ?>
+                            <form action="" method="post" enctype="multipart/form-data">
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <div class="mb-4">
                                             <label for="productName" class="form-label">PRODUCT NAME</label>
-                                            <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name...">
+                                            <input type="text" autocomplete="off" class="form-control" id="productName" name="productName" placeholder="Enter product name..." required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="stock" class="form-label">STOCK</label>
-                                            <input type="number" class="form-control" id="stock" name="stock" placeholder="Enter stock...">
+                                            <input type="number" autocomplete="off" class="form-control" id="stock" name="stock" placeholder="Enter stock..." required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="shelfLocation" class="form-label">SHELF LOCATION</label>
-                                            <input type="text" class="form-control" id="shelfLocation" name="shelfLocation" placeholder="Enter shelf location...">
+                                            <input type="text" autocomplete="off" class="form-control" id="shelfLocation" name="shelfLocation" placeholder="Enter shelf location..." required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="price" class="form-label">PRICE</label>
-                                            <input type="text" class="form-control" id="price" name="price" placeholder="Enter price...">
+                                            <input type="text" autocomplete="off" class="form-control" id="price" name="price" placeholder="Enter price..." required>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="category" class="form-label">CATEGORY</label>
+                                            <select class="form-control" id="category" name="category" required>
+                                                <option value="">Select category...</option>
+                                                <?php foreach ($categories as $category): ?>
+                                                    <option value="<?php echo $category['category_id']; ?>">
+                                                        <?php echo $category['category_name']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                     
@@ -101,12 +169,17 @@
                                         <div class="mb-4">
                                             <label for="productImage" class="form-label">PRODUCT IMAGE</label>
                                             <div class="product-image-upload">
-                                                <input type="file" class="d-none" id="productImage" name="productImage">
+                                                <input type="file" class="d-none" id="productImage" name="productImage" required>
                                                 <div class="product-image-placeholder" onclick="document.getElementById('productImage').click()">
                                                     <i class="bi bi-image"></i>
                                                     <p>Choose file</p>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="description" class="form-label">DESCRIPTION</label>
+                                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter description..." required></textarea>
                                         </div>
                                     </div>
                                 </div>
