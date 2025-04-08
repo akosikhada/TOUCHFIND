@@ -22,7 +22,7 @@ document.querySelector(".cart-icon").addEventListener("click", function () {
   window.location.href = "cart.php";
 });
 
-// Search Modal Functionality
+// DOM references
 const searchIcon = document.getElementById("searchIcon");
 const searchModal = document.getElementById("searchModal");
 const closeSearch = document.getElementById("closeSearch");
@@ -30,139 +30,79 @@ const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
 const searchResults = document.getElementById("searchResults");
 
-// Sample product data (in a real app, this would come from a database)
-const products = [
-  {
-    id: 1,
-    name: "Professional Power Drill Set",
-    price: "₱ 150.00",
-    image: "../assets/drill.png",
-  },
-  {
-    id: 2,
-    name: "Heavy Duty Tool Box",
-    price: "₱ 150.00",
-    image: "../assets/chainsaw.png",
-  },
-  {
-    id: 3,
-    name: "Premium Paint Brush Set",
-    price: "₱ 150.00",
-    image: "../assets/chair.png",
-  },
-  {
-    id: 4,
-    name: "Multi-Purpose Wrench Set",
-    price: "₱ 150.00",
-    image: "../assets/wrench.png",
-  },
-  {
-    id: 5,
-    name: "Electric Circular Saw",
-    price: "₱ 150.00",
-    image: "../assets/circular-saw.png",
-  },
-  {
-    id: 6,
-    name: "Professional Measuring Tape",
-    price: "₱ 150.00",
-    image: "../assets/measuring-tape.png",
-  },
-  {
-    id: 7,
-    name: "Safety Work Gloves",
-    price: "₱ 150.00",
-    image: "../assets/gloves.png",
-  },
-  {
-    id: 8,
-    name: "Premium Screwdriver Kit",
-    price: "₱ 150.00",
-    image: "../assets/screwdriver.png",
-  },
-];
-
-// Open search modal
-searchIcon.addEventListener("click", function () {
-  searchModal.classList.add("active");
+// Modal open/close
+searchIcon.addEventListener("click", () => {
+  searchModal.style.display = "flex";
   setTimeout(() => {
+    searchModal.style.opacity = "1";
     searchInput.focus();
+  }, 10);
+});
+
+closeSearch.addEventListener("click", () => {
+  searchModal.style.opacity = "0";
+  setTimeout(() => {
+    searchModal.style.display = "none";
+    searchResults.style.display = "none";
   }, 300);
 });
 
-// Close search modal
-closeSearch.addEventListener("click", function () {
-  searchModal.classList.remove("active");
-  searchResults.classList.remove("active");
-  // Keep the search text in the input field
-});
-
-// Close modal when clicking outside the search container
-searchModal.addEventListener("click", function (e) {
+searchModal.addEventListener("click", (e) => {
   if (e.target === searchModal) {
-    searchModal.classList.remove("active");
-    searchResults.classList.remove("active");
-    // Keep the search text in the input field
+    searchModal.style.opacity = "0";
+    setTimeout(() => {
+      searchModal.style.display = "none";
+      searchResults.style.display = "none";
+    }, 300);
   }
 });
 
-// Display search results
+// Real-time search from database
 function performSearch() {
-  const query = searchInput.value.toLowerCase().trim();
-
+  const query = searchInput.value.trim();
   if (query.length < 1) {
-    searchResults.classList.remove("active");
+    searchResults.style.display = "none";
     return;
   }
 
-  // Filter products based on search query
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(query)
-  );
+  fetch(`search_products.php?q=${encodeURIComponent(query)}`)
+    .then(res => res.json())
+    .then(products => {
+      if (products.length > 0) {
+        searchResults.innerHTML = products.map(product => `
+          <div class="search-result-item" data-id="${product.product_id}">
+            <img src="../admin/${product.product_image}" alt="${product.product_name}" class="search-result-image">
+            <div class="search-result-details">
+              <div class="search-result-title">${product.product_name}</div>
+              <div class="search-result-price">
+                <span>PRICE :</span> 
+                <span>₱ ${parseFloat(product.product_price).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        `).join("");
 
-  // Display search results
-  if (filteredProducts.length > 0) {
-    searchResults.innerHTML = "";
+        document.querySelectorAll(".search-result-item").forEach(item => {
+          item.addEventListener("click", () => {
+            const id = item.getAttribute("data-id");
+            window.location.href = `product_details.php?product_id=${id}`;
+          });
+        });
 
-    filteredProducts.forEach((product) => {
-      const resultItem = document.createElement("div");
-      resultItem.className = "search-result-item";
-      resultItem.innerHTML = `
-                        <img src="${product.image}" class="search-result-image" alt="${product.name}" loading="lazy">
-                        <div class="search-result-info">
-                            <div class="search-result-title">${product.name}</div>
-                            <div class="search-result-price">
-                                <span>PRICE :</span>
-                                <span>₱ 150.00</span>
-                            </div>
-                        </div>
-                    `;
-      resultItem.addEventListener("click", function () {
-        window.location.href = `product_details.php?id=${product.id}`;
-      });
-
-      searchResults.appendChild(resultItem);
+        searchResults.style.display = "block";
+      } else {
+        searchResults.innerHTML = `<div class="no-results">No products found matching your search</div>`;
+        searchResults.style.display = "block";
+      }
     });
-  } else {
-    searchResults.innerHTML =
-      '<div class="no-results">No products found matching your search</div>';
-  }
-
-  searchResults.classList.add("active");
 }
 
-// Search on button click
 searchButton.addEventListener("click", performSearch);
-
-// Search on enter key
-searchInput.addEventListener("keyup", function (e) {
-  if (e.key === "Enter") {
-    performSearch();
-  }
-  // Auto-search after typing
+searchInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") performSearch();
   if (searchInput.value.length >= 1) {
     performSearch();
   } else {
-    searchResults.classList.remove("active");
+    searchResults.style.display = "none";
   }
 });

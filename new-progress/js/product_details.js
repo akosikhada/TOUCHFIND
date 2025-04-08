@@ -1,70 +1,54 @@
-// Cart functionality
-const cartCountDisplay = document.querySelector(".cart-count");
+// Update quantity field in hidden input whenever plus or minus is clicked
+const quantityInput = document.getElementById("quantity");
+const hiddenQuantity = document.getElementById("hiddenQuantity");
+const minusBtn = document.querySelector(".quantity-btn.minus");
+const plusBtn = document.querySelector(".quantity-btn.plus");
 
-// Initialize cart from localStorage or create empty cart
-let cart = JSON.parse(localStorage.getItem("touchfindCart")) || [];
+// Prevent typing
+quantityInput.addEventListener("keydown", (e) => e.preventDefault());
 
-// Update cart count display on page load
-updateCartCount();
-
-// Back to Home functionality
-document.querySelector(".back-link").addEventListener("click", function (e) {
-  e.preventDefault();
-  window.location.href = "categories.php";
-});
-
-// Add to cart functionality
-document.querySelector(".add-to-cart").addEventListener("click", function () {
-  const productName = document.querySelector(".product-title").textContent;
-  const productPrice = parseFloat(
-    document.querySelector(".product-price").textContent.replace("₱", "").trim()
-  );
-  const productImage = document.querySelector(".product-image").src;
-  const quantity = parseInt(document.getElementById("quantity").value);
-  const productCategory =
-    document.querySelector(".product-category").textContent;
-
-  // Check if product exists in cart
-  const existingProductIndex = cart.findIndex(
-    (item) => item.name === productName
-  );
-
-  if (existingProductIndex > -1) {
-    // Update quantity if product already exists
-    cart[existingProductIndex].quantity += quantity;
-  } else {
-    // Add new product to cart
-    cart.push({
-      name: productName,
-      price: productPrice,
-      image: productImage,
-      quantity: quantity,
-      category: productCategory,
-    });
+// Quantity increment/decrement
+minusBtn.addEventListener("click", function () {
+  let value = parseInt(quantityInput.value);
+  if (value > 1) {
+    quantityInput.value = value - 1;
+    hiddenQuantity.value = value - 1;
   }
-
-  // Save cart to localStorage
-  localStorage.setItem("touchfindCart", JSON.stringify(cart));
-
-  // Update cart count display
-  updateCartCount();
-
-  // Show added to cart notification
-  showAddedToCartNotification(quantity);
 });
 
-// Function to update cart count
-function updateCartCount() {
-  let totalItems = 0;
-  cart.forEach((item) => {
-    totalItems += item.quantity;
-  });
-  cartCountDisplay.textContent = totalItems;
-}
+plusBtn.addEventListener("click", function () {
+  let value = parseInt(quantityInput.value);
+  if (value < 99) {
+    quantityInput.value = value + 1;
+    hiddenQuantity.value = value + 1;
+  }
+});
 
-// Function to show added to cart notification
+// Submit form to add to cart
+document.getElementById("addToCartForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  fetch("add_to_cart.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === "success") {
+        showAddedToCartNotification(formData.get("quantity"));
+      } else {
+        alert("Failed to add to cart: " + data.message);
+      }
+    })
+    .catch((err) => {
+      console.error("Error adding to cart:", err);
+      alert("Something went wrong.");
+    });
+});
+
+// Show "Added to cart" notification
 function showAddedToCartNotification(quantity) {
-  // Create notification element
   const notification = document.createElement("div");
   notification.style.position = "fixed";
   notification.style.top = "20px";
@@ -78,20 +62,15 @@ function showAddedToCartNotification(quantity) {
   notification.style.transform = "translateY(-20px)";
   notification.style.opacity = "0";
   notification.style.transition = "all 0.3s ease";
-  notification.innerHTML = `<strong>${quantity} item${
-    quantity > 1 ? "s" : ""
-  }</strong> added to cart`;
+  notification.innerHTML = `<strong>${quantity} item${quantity > 1 ? "s" : ""}</strong> added to cart`;
 
-  // Add to body
   document.body.appendChild(notification);
 
-  // Show notification
   setTimeout(() => {
     notification.style.transform = "translateY(0)";
     notification.style.opacity = "1";
   }, 10);
 
-  // Remove notification after 3 seconds
   setTimeout(() => {
     notification.style.transform = "translateY(-20px)";
     notification.style.opacity = "0";
@@ -101,67 +80,17 @@ function showAddedToCartNotification(quantity) {
   }, 3000);
 }
 
-// Quantity buttons functionality
-const quantityInput = document.getElementById("quantity");
-const minusBtn = document.querySelector(".quantity-btn.minus");
-const plusBtn = document.querySelector(".quantity-btn.plus");
-
-// Prevent any direct input on the quantity field
-quantityInput.addEventListener("keydown", function (e) {
-  e.preventDefault();
-  return false;
-});
-
-minusBtn.addEventListener("click", function () {
-  let value = parseInt(quantityInput.value);
-  if (value > 1) {
-    quantityInput.value = value - 1;
-  }
-});
-
-plusBtn.addEventListener("click", function () {
-  let value = parseInt(quantityInput.value);
-  if (value < 99) {
-    // Adding a reasonable upper limit
-    quantityInput.value = value + 1;
-  }
-});
-
-// Navigate to cart when cart icon is clicked
-document.querySelector(".cart-icon").addEventListener("click", function () {
-  window.location.href = "cart.php";
-});
-
 // Back button functionality
-document.querySelector(".back-button").addEventListener("click", function () {
+document.querySelector(".back-button").addEventListener("click", () => {
   window.history.back();
 });
 
-// Add hover effects for buttons
-const addToCartBtn = document.querySelector(".add-to-cart");
-const backButton = document.querySelector(".back-button");
-
-addToCartBtn.addEventListener("mouseenter", function () {
-  const btnHighlight = this.querySelector(".btn-highlight");
-  btnHighlight.style.left = "0";
+// Cart icon click
+document.querySelector(".cart-icon").addEventListener("click", () => {
+  window.location.href = "cart.php";
 });
 
-addToCartBtn.addEventListener("mouseleave", function () {
-  const btnHighlight = this.querySelector(".btn-highlight");
-  btnHighlight.style.left = "-100%";
-});
-
-backButton.addEventListener("mouseenter", function () {
-  const btnHighlight = this.querySelector(".btn-shopping-highlight");
-  btnHighlight.style.left = "0";
-});
-
-backButton.addEventListener("mouseleave", function () {
-  const btnHighlight = this.querySelector(".btn-shopping-highlight");
-  btnHighlight.style.left = "-100%";
-});
-
-// Search Modal Functionality
+// DOM references
 const searchIcon = document.getElementById("searchIcon");
 const searchModal = document.getElementById("searchModal");
 const closeSearch = document.getElementById("closeSearch");
@@ -169,60 +98,8 @@ const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
 const searchResults = document.getElementById("searchResults");
 
-// Sample product data (in a real app, this would come from a database)
-const products = [
-  {
-    id: 1,
-    name: "Professional Power Drill Set",
-    price: "₱ 150.00",
-    image: "../assets/drill.png",
-  },
-  {
-    id: 2,
-    name: "Heavy Duty Tool Box",
-    price: "₱ 150.00",
-    image: "../assets/chainsaw.png",
-  },
-  {
-    id: 3,
-    name: "Premium Paint Brush Set",
-    price: "₱ 150.00",
-    image: "../assets/chair.png",
-  },
-  {
-    id: 4,
-    name: "Multi-Purpose Wrench Set",
-    price: "₱ 150.00",
-    image: "../assets/wrench.png",
-  },
-  {
-    id: 5,
-    name: "Electric Circular Saw",
-    price: "₱ 150.00",
-    image: "../assets/circular-saw.png",
-  },
-  {
-    id: 6,
-    name: "Professional Measuring Tape",
-    price: "₱ 150.00",
-    image: "../assets/measuring-tape.png",
-  },
-  {
-    id: 7,
-    name: "Safety Work Gloves",
-    price: "₱ 150.00",
-    image: "../assets/gloves.png",
-  },
-  {
-    id: 8,
-    name: "Premium Screwdriver Kit",
-    price: "₱ 150.00",
-    image: "../assets/screwdriver.png",
-  },
-];
-
-// Open search modal
-searchIcon.addEventListener("click", function () {
+// Modal toggle
+searchIcon.addEventListener("click", () => {
   searchModal.style.display = "flex";
   setTimeout(() => {
     searchModal.style.opacity = "1";
@@ -230,8 +107,7 @@ searchIcon.addEventListener("click", function () {
   }, 10);
 });
 
-// Close search modal
-closeSearch.addEventListener("click", function () {
+closeSearch.addEventListener("click", () => {
   searchModal.style.opacity = "0";
   setTimeout(() => {
     searchModal.style.display = "none";
@@ -239,8 +115,7 @@ closeSearch.addEventListener("click", function () {
   }, 300);
 });
 
-// Close modal when clicking outside the search container
-searchModal.addEventListener("click", function (e) {
+searchModal.addEventListener("click", (e) => {
   if (e.target === searchModal) {
     searchModal.style.opacity = "0";
     setTimeout(() => {
@@ -250,62 +125,49 @@ searchModal.addEventListener("click", function (e) {
   }
 });
 
-// Display search results
+// Perform Search using live data
 function performSearch() {
-  const query = searchInput.value.toLowerCase().trim();
-
+  const query = searchInput.value.trim();
   if (query.length < 1) {
     searchResults.style.display = "none";
     return;
   }
 
-  // Filter products based on search query
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(query)
-  );
+  fetch(`search_products.php?q=${encodeURIComponent(query)}`)
+    .then(res => res.json())
+    .then(products => {
+      if (products.length > 0) {
+        searchResults.innerHTML = products.map(product => `
+          <div class="search-result-item" data-id="${product.product_id}">
+            <img src="../admin/${product.product_image}" alt="${product.product_name}" class="search-result-image">
+            <div class="search-result-details">
+              <div class="search-result-title">${product.product_name}</div>
+              <div class="search-result-price">
+                <span>PRICE :</span> 
+                <span>₱ ${parseFloat(product.product_price).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        `).join("");
 
-  // Display search results
-  if (filteredProducts.length > 0) {
-    searchResults.innerHTML = "";
+        document.querySelectorAll(".search-result-item").forEach(item => {
+          item.addEventListener("click", () => {
+            const id = item.getAttribute("data-id");
+            window.location.href = `product_details.php?product_id=${id}`;
+          });
+        });
 
-    filteredProducts.forEach((product) => {
-      const resultItem = document.createElement("div");
-      resultItem.className = "search-result-item";
-
-      resultItem.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}" loading="lazy" class="search-result-image">
-                        <div class="search-result-details">
-                            <div class="search-result-title">${product.name}</div>
-                            <div class="search-result-price">
-                                <span>PRICE :</span>
-                                <span>${product.price}</span>
-                            </div>
-                        </div>
-                    `;
-
-      resultItem.addEventListener("click", function () {
-        window.location.href = `product_details.php?id=${product.id}`;
-      });
-
-      searchResults.appendChild(resultItem);
+        searchResults.style.display = "block";
+      } else {
+        searchResults.innerHTML = `<div class="no-results">No products found matching your search</div>`;
+        searchResults.style.display = "block";
+      }
     });
-  } else {
-    searchResults.innerHTML =
-      '<div class="no-results">No products found matching your search</div>';
-  }
-
-  searchResults.style.display = "block";
 }
 
-// Search on button click
 searchButton.addEventListener("click", performSearch);
-
-// Search on enter key
-searchInput.addEventListener("keyup", function (e) {
-  if (e.key === "Enter") {
-    performSearch();
-  }
-  // Auto-search after typing
+searchInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") performSearch();
   if (searchInput.value.length >= 1) {
     performSearch();
   } else {
