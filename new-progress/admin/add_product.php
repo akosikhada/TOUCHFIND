@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle image upload
     if (isset($_FILES['productImage']) && $_FILES['productImage']['error'] === UPLOAD_ERR_OK) {
         $imageName = time() . '_' . basename($_FILES['productImage']['name']);
-        $targetDir = "products/";
+        $targetDir = "products/"; // Ensure this is set to "products/"
         $targetFile = $targetDir . $imageName;
-
+    
         if (!move_uploaded_file($_FILES['productImage']['tmp_name'], $targetFile)) {
             $message = "Error uploading the image.";
         }
@@ -28,15 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert product into the database
     if (empty($message)) {
-        $stmt = $conn->prepare("INSERT INTO products (product_name, stock, shelf_location, price, category_id, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sisdiss", $productName, $stock, $shelfLocation, $price, $category, $description, $imageName);
-
+        // Prepend "products/" to the image name
+        $imagePath = "products/" . $imageName;
+    
+        $stmt = $conn->prepare("INSERT INTO products (product_name, product_stock, product_shelf, product_price, category_id, product_description, product_image) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisdiss", $productName, $stock, $shelfLocation, $price, $category, $description, $imagePath); // Use $imagePath here
+    
         if ($stmt->execute()) {
             $message = "Product added successfully!";
         } else {
             $message = "Error adding product: " . $stmt->error;
         }
-
+    
         $stmt->close();
     }
 }

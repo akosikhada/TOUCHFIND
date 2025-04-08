@@ -117,21 +117,20 @@ function initializeProductActions() {
 function openEditProductModal(productRow, productId) {
 	// Get product details from the row
 	const productName = productRow.querySelector(".product-name").textContent;
-	const productSku = productRow
-		.querySelector(".product-sku")
-		.textContent.replace("SKU: ", "");
+	const productSku = productRow.querySelector(".product-sku").textContent.replace("SKU: ", "");
 	const productStock = productRow.querySelector(".stock-badge").textContent;
-	const productLocation =
-		productRow.querySelector("td:nth-child(4)").textContent;
-	const productPrice = productRow
-		.querySelector("td:nth-child(5)")
-		.textContent.replace("$", "");
+	const productLocation = productRow.querySelector("td:nth-child(6)").textContent;
+	const productPrice = productRow.querySelector("td:nth-child(7)").textContent;
 	const productImageSrc = productRow.querySelector(".product-image img").src;
+	const productCategory = productRow.querySelector(".product-category").textContent;
+	const productDescription = productRow.querySelector(".product-description").textContent;
 
 	// Set values in the modal
 	document.getElementById("editProductId").value = productId;
 	document.getElementById("editProductName").value = productName;
 	document.getElementById("editSku").value = productSku;
+	document.getElementById("editDesc").value = productDescription;
+	document.getElementById("editCategory").value = productCategory
 	document.getElementById("editStock").value = productStock;
 	document.getElementById("editShelfLocation").value = productLocation;
 	document.getElementById("editPrice").value = productPrice;
@@ -169,144 +168,39 @@ function openDeleteModal(productName, productId) {
  * Saves the changes made to a product in the edit modal
  */
 function saveProductChanges() {
-	// Get form values
-	const productId = document.getElementById("editProductId").value;
-	const productName = document.getElementById("editProductName").value;
-	const productStock = document.getElementById("editStock").value;
-	const shelfLocation = document.getElementById("editShelfLocation").value;
-	const price = document.getElementById("editPrice").value;
+    const saveButton = document.getElementById("saveProductChanges");
+    setButtonLoading(saveButton, true);
 
-	// Validate form
-	if (!productName) {
-		document.getElementById("editProductName").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Product name is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document.getElementById("editProductName").classList.remove("is-invalid");
-	}
+    const form = document.getElementById("editProductForm");
+    const formData = new FormData(form);
 
-	if (!productStock) {
-		document.getElementById("editStock").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Stock quantity is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document.getElementById("editStock").classList.remove("is-invalid");
-	}
+    // Debugging output
+    for (let [key, value] of formData.entries()) {
+        console.log(key + ': ' + value);
+    }
 
-	if (!shelfLocation) {
-		document.getElementById("editShelfLocation").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Shelf location is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document.getElementById("editShelfLocation").classList.remove("is-invalid");
-	}
-
-	if (!price) {
-		document.getElementById("editPrice").classList.add("is-invalid");
-		showNotification(
-			"<strong>Error!</strong> Price is required.",
-			"danger",
-			3000
-		);
-		return;
-	} else {
-		document.getElementById("editPrice").classList.remove("is-invalid");
-	}
-
-	// Show loading state
-	const saveButton = document.getElementById("saveProductChanges");
-	setButtonLoading(saveButton, true);
-
-	// Here you would typically make an AJAX call to update the product
-	// For demonstration, we'll just simulate a delay and update the row
-	setTimeout(() => {
-		// Find the product row
-		const editButton = document.querySelector(
-			`button.edit-btn[data-product-id="${productId}"]`
-		);
-		const productRow = editButton ? editButton.closest("tr") : null;
-
-		if (!productRow) {
-			showNotification(
-				"<strong>Error!</strong> Could not find product row to update.",
-				"danger",
-				3000
-			);
-			setButtonLoading(saveButton, false);
-			return;
-		}
-
-		// Update the row with new values
-		productRow.querySelector(".product-name").textContent = productName;
-
-		// Update stock with appropriate class
-		const stockBadge = productRow.querySelector(".stock-badge");
-		stockBadge.textContent = productStock;
-
-		// Remove existing classes and add new one based on stock level
-		stockBadge.classList.remove("high", "medium", "low", "critical");
-		if (productStock > 30) {
-			stockBadge.classList.add("high");
-		} else if (productStock > 20) {
-			stockBadge.classList.add("medium");
-		} else if (productStock > 10) {
-			stockBadge.classList.add("low");
-		} else {
-			stockBadge.classList.add("critical");
-		}
-
-		// Update other fields
-		productRow.querySelector("td:nth-child(4)").textContent = shelfLocation;
-		productRow.querySelector("td:nth-child(5)").textContent =
-			"$" + parseFloat(price).toFixed(2);
-
-		// If a new image was selected, update the image
-		const fileInput = document.getElementById("editProductImage");
-		if (fileInput.files && fileInput.files[0]) {
-			const reader = new FileReader();
-			reader.onload = function (e) {
-				productRow.querySelector(".product-image img").src = e.target.result;
-			};
-			reader.readAsDataURL(fileInput.files[0]);
-		}
-
-		// Hide modal with a slight delay for better UX
-		setTimeout(() => {
-			const editModal = bootstrap.Modal.getInstance(
-				document.getElementById("editProductModal")
-			);
-			editModal.hide();
-
-			// Reset loading state
-			setButtonLoading(saveButton, false);
-
-			// Show success message
-			showNotification(
-				`<strong>Success!</strong> Product "${productName}" has been updated.`,
-				"success",
-				3000
-			);
-
-			// Highlight the updated row
-			productRow.style.transition = "background-color 0.5s ease";
-			productRow.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
-			setTimeout(() => {
-				productRow.style.backgroundColor = "";
-			}, 2000);
-		}, 300);
-	}, 800);
+    fetch("update_product.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        if (result.trim() === "success") {
+            showNotification(`<strong>Success!</strong> Product updated.`, "success", 3000);
+            const editModal = bootstrap.Modal.getInstance(document.getElementById("editProductModal"));
+            editModal.hide();
+            setTimeout(() => location.reload(), 500);
+        } else {
+            showNotification(`<strong>Error:</strong> Failed to update product.`, "danger", 3000);
+            console.error("Update error:", result); // Log the error
+        }
+        setButtonLoading(saveButton, false);
+    })
+    .catch(error => {
+        console.error("Error updating product:", error);
+        showNotification(`<strong>Error:</strong> ${error}`, "danger", 3000);
+        setButtonLoading(saveButton, false);
+    });
 }
 
 /**
@@ -547,80 +441,83 @@ function initializeDeleteConfirmations() {
  * @param {string} displayName - The display name for notifications
  */
 function initializeTypeDeleteConfirmation(type, displayName) {
-	const confirmDeleteBtn = document.getElementById(
-		`confirmDelete${type}`
-	);
-	if (confirmDeleteBtn) {
-		confirmDeleteBtn.addEventListener("click", function () {
-			const itemId = document.getElementById(
-				`delete${type}Id`
-			).value;
-			let itemName = "";
+    const confirmDeleteBtn = document.getElementById(`confirmDelete${type}`);
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", function () {
+            const itemId = document.getElementById(`delete${type}Id`).value;
+            let itemName = "";
 
-			// Get appropriate name/identifier based on type
-			if (type === "Product") {
-				itemName = document.getElementById("deleteProductName").textContent;
-			} else if (type === "Message") {
-				itemName = document.getElementById("deleteMessageSender").textContent;
-			}
+            // Get appropriate name/identifier based on type
+            if (type === "Product") {
+                itemName = document.getElementById("deleteProductName").textContent;
+            }
 
-			// Show loading state
-			setButtonLoading(this, true);
+            // Show loading state
+            setButtonLoading(this, true);
 
-			// DIRECT APPROACH: Find all rows with delete buttons and match the ID
-			const allDeleteButtons = document.querySelectorAll("button.delete-btn");
-			let targetButton = null;
+            // Send AJAX request to delete the product
+            fetch("delete_product.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `productId=${itemId}`,
+            })
+                .then((response) => response.text())
+                .then((result) => {
+                    if (result.trim() === "success") {
+                        // Remove the row from the table
+                        const allDeleteButtons = document.querySelectorAll("button.delete-btn");
+                        let targetButton = null;
 
-			// Find the button with matching ID attribute
-			for (const btn of allDeleteButtons) {
-				if (btn.getAttribute(`data-${displayName}-id`) === itemId) {
-					targetButton = btn;
-					break;
-				}
-			}
+                        for (const btn of allDeleteButtons) {
+                            if (btn.getAttribute(`data-${displayName}-id`) === itemId) {
+                                targetButton = btn;
+                                break;
+                            }
+                        }
 
-			// If button found, get its row
-			let itemRow = null;
-			if (targetButton) {
-				itemRow = targetButton.closest("tr");
-			}
+                        let itemRow = null;
+                        if (targetButton) {
+                            itemRow = targetButton.closest("tr");
+                        }
 
-			if (!itemRow) {
-				console.error(`Could not find row with ${displayName}-id=${itemId}`);
-				showNotification(
-					`<strong>Error!</strong> Could not find item to delete.`,
-					"danger",
-					3000
-				);
-				setButtonLoading(confirmDeleteBtn, false);
-				return;
-			}
+                        if (itemRow) {
+                            itemRow.remove();
+                        }
 
-			// Hide the modal immediately
-			const deleteModal = bootstrap.Modal.getInstance(
-				document.getElementById(
-					`delete${type}Modal`
-				)
-			);
-			deleteModal.hide();
+                        // Close the delete modal
+                        const deleteModal = bootstrap.Modal.getInstance(
+                            document.getElementById(`delete${type}Modal`)
+                        );
+                        deleteModal.hide();
 
-			// Immediately remove the row
-			itemRow.remove();
-
-			// Reset loading state
-			setButtonLoading(confirmDeleteBtn, false);
-
-			// Show success message
-			let successMessage = "";
-			if (type === "Product") {
-				successMessage = `<strong>Success!</strong> Product "${itemName}" has been deleted.`;
-			} else if (type === "Message") {
-				successMessage = `<strong>Success!</strong> Message from ${itemName} has been deleted.`;
-			}
-
-			showNotification(successMessage, "success", 3000);
-		});
-	}
+                        // Show success message
+                        showNotification(
+                            `<strong>Success!</strong> ${displayName} "${itemName}" has been deleted.`,
+                            "success",
+                            3000
+                        );
+                    } else {
+                        showNotification(
+                            `<strong>Error:</strong> Failed to delete ${displayName}.`,
+                            "danger",
+                            3000
+                        );
+                    }
+                    setButtonLoading(confirmDeleteBtn, false);
+                })
+                .catch((error) => {
+                    console.error("Error deleting item:", error);
+                    showNotification(
+                        `<strong>Error:</strong> ${error}`,
+                        "danger",
+                        3000
+                    );
+                    setButtonLoading(confirmDeleteBtn, false);
+                });
+        });
+    }
 }
 
 /**

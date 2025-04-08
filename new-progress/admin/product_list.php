@@ -1,3 +1,16 @@
+<?php
+require_once 'components/db_connection.php';
+session_start();
+
+function truncateDescription($description, $wordLimit) {
+    $words = explode(' ', $description);
+    if (count($words) > $wordLimit) {
+        return implode(' ', array_slice($words, 0, $wordLimit)) . '...';
+    }
+    return $description;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,7 +160,7 @@
         <main class="admin-main">
             <div class="container-fluid px-4 py-4">
                 <?php renderAdminHeader('LIST OF PRODUCT', 'Search products...'); ?>
-                
+
                 <!-- Product List Table -->
                 <div class="admin-table-container">
                     <div class="table-responsive">
@@ -156,6 +169,8 @@
                                 <tr>
                                     <th>IMAGE</th>
                                     <th>PRODUCT NAME</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>CATEGORY</th>
                                     <th>STOCK</th>
                                     <th>SHELF LOCATION</th>
                                     <th>PRICE</th>
@@ -164,84 +179,54 @@
                             </thead>
                             <tbody>
                                 <?php
-                                // Sample product data
-                                $products = [
-                                    [
-                                        'id' => 'TL-1001',
-                                        'name' => 'Hammer',
-                                        'image' => '../assets/hammer-icon.png',
-                                        'stock' => 15,
-                                        'shelf' => 'A-11',
-                                        'price' => 19.99,
-                                        'class' => 'low'
-                                    ],
-                                    [
-                                        'id' => 'TL-1002',
-                                        'name' => 'Screwdriver Set',
-                                        'image' => '../assets/screwdriver.png',
-                                        'stock' => 28,
-                                        'shelf' => 'A-12',
-                                        'price' => 24.99,
-                                        'class' => 'medium'
-                                    ],
-                                    [
-                                        'id' => 'TL-1003',
-                                        'name' => 'Wrench',
-                                        'image' => '../assets/wrench.png',
-                                        'stock' => 42,
-                                        'shelf' => 'A-13',
-                                        'price' => 15.99,
-                                        'class' => 'high'
-                                    ],
-                                    [
-                                        'id' => 'TL-1004',
-                                        'name' => 'Power Drill',
-                                        'image' => '../assets/drill.png',
-                                        'stock' => 7,
-                                        'shelf' => 'B-21',
-                                        'price' => 89.99,
-                                        'class' => 'critical'
-                                    ],
-                                    [
-                                        'id' => 'TL-1005',
-                                        'name' => 'Measuring Tape',
-                                        'image' => '../assets/measuring-tape.png',
-                                        'stock' => 35,
-                                        'shelf' => 'B-22',
-                                        'price' => 9.99,
-                                        'class' => 'high'
-                                    ]
-                                ];
-                                
-                                foreach ($products as $product): ?>
+                                $sql = "SELECT p.*, c.category_name 
+                                        FROM products p
+                                        LEFT JOIN categories c ON p.category_id = c.category_id";
+                                $result = $conn->query($sql);
+
+                                if ($result && $result->num_rows > 0):
+                                    while ($product = $result->fetch_assoc()):
+                                        // Simulate stock and shelf if you don't have these columns yet
+                                        $stock = $product['product_stock'];
+                                        $shelf = $product['product_shelf'];
+                                        $stockClass = ($stock > 30) ? 'high' : (($stock > 20) ? 'medium' : (($stock > 10) ? 'low' : 'critical'));
+                                        $imagePath = !empty($product['product_image']) ? $product['product_image'] : '../assets/placeholder.png';
+                                ?>
                                 <tr>
                                     <td data-label="IMAGE">
                                         <div class="product-image">
-                                            <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-fluid">
+                                            <img src="<?= $imagePath ?>" alt="<?= htmlspecialchars($product['product_name']) ?>" class="img-fluid">
                                         </div>
                                     </td>
                                     <td data-label="PRODUCT">
-                                        <div class="product-name"><?php echo $product['name']; ?></div>
-                                        <div class="product-sku">SKU: <?php echo $product['id']; ?></div>
+                                        <div class="product-name"><?= htmlspecialchars($product['product_name']) ?></div>
+                                        <div class="product-sku">SKU: <?= htmlspecialchars($product['product_sku']) ?></div>
                                     </td>
-                                    <td data-label="STOCK">
-                                        <span class="stock-badge <?php echo $product['class']; ?>"><?php echo $product['stock']; ?></span>
-                                    </td>
-                                    <td data-label="LOCATION"><?php echo $product['shelf']; ?></td>
-                                    <td data-label="PRICE">$<?php echo number_format($product['price'], 2); ?></td>
+                                    <td data-label="DESCRIPTION"><span class="product-description"><?= htmlspecialchars($product['product_description']) ?></span></td>
+                                    <td data-label="CATEGORY"><span class="product-category"><?= htmlspecialchars($product['category_name']) ?></span></td>
+                                    <td data-label="STOCK"><span class="stock-badge <?= $stockClass ?>"><?= $stock ?></span></td>
+                                    <td data-label="LOCATION"><?= htmlspecialchars($shelf) ?></td>
+                                    <td data-label="PRICE"><?= number_format($product['product_price'], 2) ?></td>
                                     <td class="action-buttons no-border" style="border-bottom: none; border-top: none;" data-label="ACTIONS">
                                         <div style="border: none; background: transparent;">
-                                            <?php echo renderActionButtons('product', $product['id']); ?>
+                                            <?= renderActionButtons('product', $product['product_id']) ?>
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endforeach; ?>
+                                <?php
+                                    endwhile;
+                                else:
+                                ?>
+                                <tr>
+                                    <td colspan="8" class="text-center">No products found.</td>
+                                </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
-                <!-- Pagination -->
+
+                <!-- Pagination UI Placeholder (Static) -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <div class="items-per-page">
                         <span>Items per page:</span>
@@ -255,19 +240,11 @@
                     
                     <nav aria-label="Page navigation">
                         <ul class="pagination mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    Previous
-                                </a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
                             <li class="page-item"><a class="page-link" href="#">2</a></li>
                             <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    Next
-                                </a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -289,13 +266,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="editProductForm">
+                    <form id="editProductForm" enctype="multipart/form-data">
                         <input type="hidden" id="editProductId" name="productId">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="mb-4">
                                     <label for="editProductName" class="form-label">PRODUCT NAME</label>
                                     <input type="text" class="form-control" id="editProductName" name="productName" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="editCategory" class="form-label">CATEGORY</label>
+                                    <input type="text" class="form-control" id="editCategory" name="categ" required>
                                 </div>
                                 
                                 <div class="mb-4">
@@ -309,7 +291,7 @@
                                 </div>
                                 
                                 <div class="mb-4">
-                                    <label for="editPrice" class="form-label">PRICE ($)</label>
+                                    <label for="editPrice" class="form-label">PRICE (₱)</label>
                                     <input type="number" step="0.01" class="form-control" id="editPrice" name="price" required>
                                 </div>
                             </div>
@@ -326,7 +308,11 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="editSku" class="form-label">SKU</label>
-                                    <input type="text" class="form-control" id="editSku" name="sku" readonly>
+                                    <input required type="text" class="form-control" id="editSku" name="sku">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="editDesc" class="form-label">DESCRIPTION</label>
+                                    <input type="text" class="form-control" id="editDesc" name="desc">
                                 </div>
                             </div>
                         </div>
