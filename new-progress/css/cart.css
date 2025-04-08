@@ -717,11 +717,13 @@ footer {
 .payment-method {
   display: flex;
   align-items: center;
+  border: 2px solid #333;
   padding: 15px;
   border-radius: 8px;
   cursor: pointer;
-  background-color: #263447;
   transition: all 0.3s ease;
+  margin-bottom: 10px;
+  gap: 10px;
 }
 
 .payment-method:hover {

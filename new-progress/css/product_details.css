@@ -158,10 +158,9 @@ body {
 }
 
 .product-image {
-  width: 80%;
-  height: auto;
-  max-height: 250px;
-  object-fit: contain;
+  width: 95%;
+  height: 95%;
+  object-fit: cover;
   border-radius: 8px;
 }
 
