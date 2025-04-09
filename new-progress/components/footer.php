@@ -5,7 +5,7 @@
     <div class="container-fluid px-4">
         <div class="row align-items-center">
             <div class="col-6 col-sm-6 text-start">
-                <p class="mb-0 footer-text">© 2025 TOUCHFIND</p>
+                <p class="mb-0 footer-text">© <?php echo date('Y'); ?> TOUCHFIND</p>
             </div>
             <div class="col-6 col-sm-6 d-flex justify-content-end">
                 <div class="d-flex align-items-center">
