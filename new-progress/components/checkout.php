@@ -25,7 +25,7 @@
             <!-- Left Column -->
             <div class="checkout-left">
                 <!-- Payment Method Section -->
-                <div class="checkout-section checkout-section-delay-1">
+                <!-- <div class="checkout-section checkout-section-delay-1">
                     <h2 class="section-title">Payment Method</h2>
                     <div class="payment-methods">
                         <div class="payment-method selected">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
                 <!-- Order Items Section -->
                 <div class="checkout-section checkout-section-delay-2">
