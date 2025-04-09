@@ -124,7 +124,7 @@ if ($result->num_rows > 0) {
         <!-- Main Content Area -->
         <main class="admin-main">
             <div class="container-fluid px-4 py-4">
-                <?php renderAdminHeader('CREATE PRODUCT', '', false); ?>
+                <?php renderAdminHeader('ADD PRODUCT', '', false); ?>
                 
                 <div class="product-form-container">
                     <div class="card product-form-card">
@@ -137,22 +137,22 @@ if ($result->num_rows > 0) {
                                     <div class="col-md-6">
                                         <div class="mb-4">
                                             <label for="productName" class="form-label">PRODUCT NAME</label>
-                                            <input type="text" autocomplete="off" class="form-control" id="productName" name="productName" placeholder="Enter product name..." required>
+                                            <input type="text" autocomplete="off" class="form-control" id="productName" name="productName" placeholder="e.g. Hammer, Screwdriver, Nails, etc." required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="stock" class="form-label">STOCK</label>
-                                            <input type="number" autocomplete="off" class="form-control" id="stock" name="stock" placeholder="Enter stock..." required>
+                                            <input type="number" autocomplete="off" class="form-control" id="stock" name="stock" placeholder="Enter quantity of product available..." required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="shelfLocation" class="form-label">SHELF LOCATION</label>
-                                            <input type="text" autocomplete="off" class="form-control" id="shelfLocation" name="shelfLocation" placeholder="Enter shelf location..." required>
+                                            <input type="text" autocomplete="off" class="form-control" id="shelfLocation" name="shelfLocation" placeholder="Enter location (e.g., Aisle 3, Shelf B, Bin 4)" required>
                                         </div>
                                         
                                         <div class="mb-4">
                                             <label for="price" class="form-label">PRICE</label>
-                                            <input type="text" autocomplete="off" class="form-control" id="price" name="price" placeholder="Enter price..." required>
+                                            <input type="text" autocomplete="off" class="form-control" id="price" name="price" placeholder="e.g. 19.99, 5.00, 0.99..." required>
                                         </div>
 
                                         <div class="mb-4">
@@ -182,7 +182,7 @@ if ($result->num_rows > 0) {
 
                                         <div class="mb-4">
                                             <label for="description" class="form-label">DESCRIPTION</label>
-                                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter description..." required></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter detailed product description, features, and specifications..." required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@ if ($result->num_rows > 0) {
                                 <div class="text-end mt-3">
                                     <button type="submit" class="btn btn-create-product">
                                         <i class="bi bi-plus-circle me-2"></i>
-                                        CREATE PRODUCT
+                                        ADD PRODUCT
                                     </button>
                                 </div>
                             </form>
