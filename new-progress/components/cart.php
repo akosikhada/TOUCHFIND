@@ -77,7 +77,7 @@ $total = $subtotal + $tax;
                     <div class="payment-methods-container">
                         <h2 class="section-title">Payment Method</h2>
                         <div class="payment-methods">
-                            <div class="payment-method">
+                            <!-- <div class="payment-method">
                                 <input type="radio" name="payment" id="paypal" class="payment-method-radio">
                                 <div class="payment-method-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#aaa" class="bi bi-paypal" viewBox="0 0 16 16">
@@ -87,7 +87,7 @@ $total = $subtotal + $tax;
                                 <div class="payment-method-details">
                                 <div class="payment-method-name">Pay with PayPal</div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="payment-method">
                                 <input type="radio" name="payment" id="cash" class="payment-method-radio">
                                 <div class="payment-method-icon">
