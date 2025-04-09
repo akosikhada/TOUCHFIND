@@ -13,6 +13,9 @@ if (isset($_POST['message'])) {
         return array_filter(array_diff($words, $stopWords));
     }
 
+    // This function searches the products table for records that match the keywords.
+    // It performs a LIKE search on the product_name and product_description columns.
+    // It returns a list of up to 5 matching products.
     function searchProducts($conn, $keywords) {
         if (empty($keywords)) return [];
 
@@ -33,6 +36,8 @@ if (isset($_POST['message'])) {
     $keywords = extractKeywords($userMessage);
     $products = searchProducts($conn, $keywords);
 
+    // If the search returns products, show them to the customer.
+    // Otherwise, give a default response.
     if (!empty($products)) {
         $response = "Is this what you're looking for?<br><br>";
         foreach ($products as $product) {
@@ -44,6 +49,7 @@ if (isset($_POST['message'])) {
             $response .= "</div></div><br>";
         }
     } else {
+        // If no products are found, give a default response based on the user's message.
         $response = getBotResponse($userMessage);
     }
 
