@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 
 $conn->set_charset("utf8mb4");
 
-// Update cart count in session
+// Update cart count in session since javascript is not used in this file
 if (!isset($_SESSION['cart_count'])) {
     $countSql = "SELECT COUNT(*) as count FROM cart";
     $countResult = $conn->query($countSql);
