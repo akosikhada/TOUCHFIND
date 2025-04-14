@@ -7,9 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoryId = intval($_POST['category_id']);
     $quantity = intval($_POST['quantity']);
     $addedAt = date("Y-m-d H:i:s");
-    $paymentMethod = 'Cash'; // Default payment method
+    $paymentMethod = 'Cash';
 
-    // Get product details
     $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
     $stmt->bind_param("i", $productId);
     $stmt->execute();
@@ -22,36 +21,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $productPrice = $product['product_price'];
         $productImage = $product['product_image'];
 
-        $tax = 50.00;
-        $subTotal = $productPrice * $quantity;
-        $total = $subTotal + $tax;
+        // Check if item already exists in cart
+        $check = $conn->prepare("SELECT * FROM cart WHERE product_id = ?");
+        $check->bind_param("i", $productId);
+        $check->execute();
+        $existing = $check->get_result()->fetch_assoc();
 
-        $stmt = $conn->prepare("
-            INSERT INTO cart (
-                product_id, category_id, quantity, product_name,
-                product_stock, product_price, product_image, tax,
-                sub_total, total, payment_method, added_at
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
+        if ($existing) {
+            $newQty = $existing['quantity'] + $quantity;
+            $newSubTotal = $newQty * $productPrice;
+            $newTotal = $newSubTotal + 50;
 
-        $stmt->bind_param(
-            "iiisdssdddss", 
-            $productId,
-            $categoryId,
-            $quantity,
-            $productName,
-            $productStock,
-            $productPrice,
-            $productImage,
-            $tax,
-            $subTotal,
-            $total,
-            $paymentMethod,
-            $addedAt
-        );
+            $update = $conn->prepare("UPDATE cart SET quantity = ?, sub_total = ?, total = ?, added_at = ? WHERE cart_id = ?");
+            $update->bind_param("iddsi", $newQty, $newSubTotal, $newTotal, $addedAt, $existing['cart_id']);
+            $update->execute();
+        } else {
+            $tax = 50.00;
+            $subTotal = $productPrice * $quantity;
+            $total = $subTotal + $tax;
 
-        $stmt->execute();
+            $insert = $conn->prepare("
+                INSERT INTO cart (
+                    product_id, category_id, quantity, product_name,
+                    product_stock, product_price, product_image, tax,
+                    sub_total, total, payment_method, added_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $insert->bind_param(
+                "iiisdssdddss",
+                $productId, $categoryId, $quantity, $productName,
+                $productStock, $productPrice, $productImage, $tax,
+                $subTotal, $total, $paymentMethod, $addedAt
+            );
+            $insert->execute();
+        }
 
         echo json_encode(["status" => "success", "message" => "Product added to cart"]);
     } else {

@@ -13,9 +13,6 @@ if (isset($_POST['message'])) {
         return array_filter(array_diff($words, $stopWords));
     }
 
-    // This function searches the products table for records that match the keywords.
-    // It performs a LIKE search on the product_name and product_description columns.
-    // It returns a list of up to 5 matching products.
     function searchProducts($conn, $keywords) {
         if (empty($keywords)) return [];
 
@@ -33,24 +30,79 @@ if (isset($_POST['message'])) {
         return $products;
     }
 
-    $keywords = extractKeywords($userMessage);
-    $products = searchProducts($conn, $keywords);
+    // Function to suggest materials based on project keywords
+    // Add more projects and their keywords as needed
+    // Example: 'birdhouse' => ['wood', 'nail', 'glue', 'hammer', 'saw', 'paint']
+    // your choice of projects or builds
 
-    // If the search returns products, show them to the customer.
-    // Otherwise, give a default response.
-    if (!empty($products)) {
-        $response = "Is this what you're looking for?<br><br>";
-        foreach ($products as $product) {
-            $response .= "<div class='product-result'>";
-            $response .= "<img src='../admin/{$product['product_image']}' alt='{$product['product_name']}' class='product-image' style='width:60px;height:60px;border-radius:5px;margin-right:10px;'>";
-            $response .= "<div class='product-info' style='display:inline-block;vertical-align:top;'>";
-            $response .= "<a href='product_details.php?product_id={$product['product_id']}' class='product-name' style='font-weight:bold;color:#007bff;text-decoration:none;'>" . htmlspecialchars($product['product_name']) . "</a><br>";
-            $response .= "<span>₱" . number_format($product['product_price'], 2) . "</span>";
-            $response .= "</div></div><br>";
+    function suggestMaterialsByProject($conn, $message) {
+        $projectSuggestions = [
+            'birdhouse' => ['wood', 'nail', 'glue', 'hammer', 'saw', 'paint'],
+            'bookshelf' => ['wood', 'screw', 'drill', 'sandpaper', 'stain'],
+            'doghouse' => ['plywood', 'roofing', 'nail', 'paint', '2x4', 'shingles'],
+            'cabinet' => ['hinge', 'plywood', 'screw', 'handle', 'varnish'],
+            'table' => ['leg', 'plywood', 'nail', 'sandpaper', 'wood glue'],
+            'fence' => ['wire', 'wood', 'screw', 'paint', 'mesh']
+        ];
+
+        foreach ($projectSuggestions as $project => $keywords) {
+            if (strpos($message, $project) !== false) {
+                $where = implode(' OR ', array_map(function ($word) {
+                    return "product_name LIKE '%$word%' OR product_description LIKE '%$word%'";
+                }, $keywords));
+
+                $sql = "SELECT product_id, product_name, product_price, product_image 
+                        FROM products 
+                        WHERE $where 
+                        LIMIT 5";
+                $result = $conn->query($sql);
+
+                $products = [];
+                while ($row = $result->fetch_assoc()) {
+                    $products[] = $row;
+                }
+
+                if (!empty($products)) {
+                    $response = "Here are some suggested materials for your <b>$project</b>:<br><br>";
+                    foreach ($products as $product) {
+                        $response .= "<div class='product-result'>";
+                        $response .= "<img src='../admin/{$product['product_image']}' alt='{$product['product_name']}' class='product-image' style='width:60px;height:60px;border-radius:5px;margin-right:10px;'>";
+                        $response .= "<div class='product-info' style='display:inline-block;vertical-align:top;'>";
+                        $response .= "<a href='product_details.php?product_id={$product['product_id']}' class='product-name' style='font-weight:bold;color:#007bff;text-decoration:none;'>" . htmlspecialchars($product['product_name']) . "</a><br>";
+                        $response .= "<span>₱" . number_format($product['product_price'], 2) . "</span>";
+                        $response .= "</div></div><br>";
+                    }
+                    return $response;
+                } else {
+                    return "I couldn't find any materials for <b>$project</b> right now. Try again later or browse manually.";
+                }
+            }
         }
-    } else {
-        // If no products are found, give a default response based on the user's message.
-        $response = getBotResponse($userMessage);
+
+        return null;
+    }
+
+    // Try suggesting materials based on project keywords
+    $response = suggestMaterialsByProject($conn, $userMessage);
+
+    // If no project match, try keyword product search
+    if ($response === null) {
+        $keywords = extractKeywords($userMessage);
+        $products = searchProducts($conn, $keywords);
+
+        if (!empty($products)) {
+            $response = "Is this what you're looking for?<br><br>";
+            foreach ($products as $product) {
+                $response .= "<div class='product-result'>";
+                $response .= "<img src='../admin/{$product['product_image']}' alt='{$product['product_name']}' class='product-image' style='width:60px;height:60px;border-radius:5px;margin-right:10px;'>";
+                $response .= "<div class='product-info' style='display:inline-block;vertical-align:top;'>";
+                $response .= "<a href='product_details.php?product_id={$product['product_id']}' class='product-name' style='font-weight:bold;color:#007bff;text-decoration:none;'>" . htmlspecialchars($product['product_name']) . "</a><br>";
+                $response .= "<span>₱" . number_format($product['product_price'], 2) . "</span>";
+                $response .= "</div></div><br>";
+            }
+        } else {
+            $response = getBotResponse($userMessage);
+        }
     }
 
     // Save both messages to DB

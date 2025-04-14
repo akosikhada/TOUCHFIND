@@ -41,6 +41,9 @@
         <div class="floating-icon" id="hammer-icon2">
             <img src="../assets/box-icon.png" alt="Box" class="img-fluid">
         </div>
+        <div class="floating-icon" id="commodity-icon">
+            <img src="../assets/Commodity.png" alt="Box" class="img-fluid">
+        </div>
     </div>
 
     <div class="container-fluid d-flex flex-column justify-content-center align-items-center vh-100">

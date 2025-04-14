@@ -29,7 +29,7 @@ $orderNumber = isset($_GET['order_id']) ? $_GET['order_id'] : 'ORD-' . date('Y')
         
         <div class="thank-you">Thank you for your purchase!</div>
         
-        <div class="footer">© <?php echo date('Y'); ?> TOUCHFIND. All rights reserved.</div>
+        <div class="footer">© 2024 TOUCHFIND. All rights reserved.</div>
     </div>
     
     <script src="../js/success.js" defer></script>
