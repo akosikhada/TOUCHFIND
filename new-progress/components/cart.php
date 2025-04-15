@@ -59,9 +59,9 @@ $total = $subtotal + $tax;
                             <div class="item-actions">
                                 <div class="action-row">
                                     <div class="quantity-controls">
-                                        <button class="quantity-btn minus" onclick="decrementQuantity(this)">-</button>
+                                        <button class="quantity-btn minus">-</button>
                                         <input type="number" class="quantity-input" value="<?php echo $item['quantity']; ?>" readonly>
-                                        <button class="quantity-btn plus" onclick="incrementQuantity(this)">+</button>
+                                        <button class="quantity-btn plus">+</button>
                                     </div>
                                     <a class="remove-link" href="remove_cart_item.php?id=<?php echo $item['cart_id']; ?>">Remove</a>
                                 </div>
@@ -118,27 +118,30 @@ $total = $subtotal + $tax;
             </div>
         </div>
     </div>
-
     <?php include 'footer.php'; ?>
+    
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.querySelectorAll(".payment-method").forEach((method) => {
-            method.addEventListener("click", function () {
-                // Remove from all
-                document.querySelectorAll(".payment-method").forEach((m) => {
-                m.classList.remove("selected");
-                m.querySelector(".payment-method-radio").checked = false;
-                const label = m.querySelector(".payment-selected-label");
-                if (label) label.style.display = "none";
+        document.addEventListener("DOMContentLoaded", function() {
+            // Payment method handling
+            document.querySelectorAll(".payment-method").forEach((method) => {
+                method.addEventListener("click", function () {
+                    // Remove from all
+                    document.querySelectorAll(".payment-method").forEach((m) => {
+                    m.classList.remove("selected");
+                    m.querySelector(".payment-method-radio").checked = false;
+                    const label = m.querySelector(".payment-selected-label");
+                    if (label) label.style.display = "none";
+                    });
+
+                    // Add to clicked one
+                    this.classList.add("selected");
+                    const radio = this.querySelector(".payment-method-radio");
+                    if (radio) radio.checked = true;
+
+                    const selectedLabel = this.querySelector(".payment-selected-label");
+                    if (selectedLabel) selectedLabel.style.display = "block";
                 });
-
-                // Add to clicked one
-                this.classList.add("selected");
-                const radio = this.querySelector(".payment-method-radio");
-                if (radio) radio.checked = true;
-
-                const selectedLabel = this.querySelector(".payment-selected-label");
-                if (selectedLabel) selectedLabel.style.display = "block";
             });
         });
     </script>
@@ -155,35 +158,45 @@ $total = $subtotal + $tax;
             const updateTotal = () => {
                 let total = 0;
                 document.querySelectorAll(".subtotal-value").forEach((el) => {
-                const num = parseFloat(el.textContent.replace("₱", "").replace(",", ""));
-                total += num;
+                    const num = parseFloat(el.textContent.replace("₱", "").replace(",", ""));
+                    total += num;
                 });
 
                 const tax = 50;
                 const finalTotal = total + tax;
-                document.querySelector(".summary-row:first-child span:last-child").textContent = `₱${total.toFixed(2)}`;
-                document.querySelector(".summary-row.total span:last-child").textContent = `₱${finalTotal.toFixed(2)}`;
+                
+                // Use more specific selectors and add null checks
+                const subtotalElement = document.querySelector(".order-summary .summary-row:first-child span:last-child");
+                const totalElement = document.querySelector(".order-summary .summary-row.total span:last-child");
+                
+                if (subtotalElement) {
+                    subtotalElement.textContent = `₱${total.toFixed(2)}`;
+                }
+                
+                if (totalElement) {
+                    totalElement.textContent = `₱${finalTotal.toFixed(2)}`;
+                }
             };
 
             document.querySelectorAll(".quantity-btn.plus").forEach((btn) => {
                 btn.addEventListener("click", () => {
-                const input = btn.parentElement.querySelector(".quantity-input");
-                let val = parseInt(input.value);
-                if (val < 99) {
-                    input.value = val + 1;
-                    updateSubtotal(btn.closest(".cart-item"));
-                }
+                    const input = btn.parentElement.querySelector(".quantity-input");
+                    let val = parseInt(input.value);
+                    if (val < 99) {
+                        input.value = val + 1;
+                        updateSubtotal(btn.closest(".cart-item"));
+                    }
                 });
             });
 
             document.querySelectorAll(".quantity-btn.minus").forEach((btn) => {
                 btn.addEventListener("click", () => {
-                const input = btn.parentElement.querySelector(".quantity-input");
-                let val = parseInt(input.value);
-                if (val > 1) {
-                    input.value = val - 1;
-                    updateSubtotal(btn.closest(".cart-item"));
-                }
+                    const input = btn.parentElement.querySelector(".quantity-input");
+                    let val = parseInt(input.value);
+                    if (val > 1) {
+                        input.value = val - 1;
+                        updateSubtotal(btn.closest(".cart-item"));
+                    }
                 });
             });
             updateTotal();
