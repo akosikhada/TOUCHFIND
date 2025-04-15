@@ -11,221 +11,694 @@
     <!-- Admin CSS -->
     <link href="css/admin.css" rel="stylesheet">
     <style>
-        /* Responsive table styles */
+        /* Chat interface modern styling */
+        .chat-container {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .chat-header {
+            background-color: #c32424;
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chat-header .bi-chat-dots {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .chat-filters {
+            background-color: #f8f9fa;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e8e8e8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .filter-header {
+            margin-bottom: 12px;
+        }
+        
+        .filter-header h6 {
+            color: #333;
+            font-weight: 600;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .filter-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #555;
+            text-transform: uppercase;
+        }
+        
+        .filter-select {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            width: 100%;
+            color: #333;
+            height: 42px;
+        }
+        
+        .btn-apply-filters {
+            background-color: #c32424;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-left: auto;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+        
+        .btn-apply-filters i {
+            font-size: 1rem;
+        }
+        
+        .btn-apply-filters:hover {
+            background-color: #a71f1f;
+            color: white;
+        }
+        
+        /* Message styling */
+        .message-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .message-card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        
+        .message-card.bot-message {
+            border-left-color: #2e86de;
+        }
+        
+        .message-card.customer-message {
+            border-left-color: #20bf6b;
+        }
+        
+        .message-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .message-sender {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .message-sender i {
+            font-size: 1rem;
+        }
+        
+        .message-timestamp {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .message-content {
+            padding: 12px 16px;
+            color: #444;
+            line-height: 1.5;
+        }
+        
+        .message-actions {
+            padding: 8px 16px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .btn-message-action {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-message-action:hover {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-message-action.edit {
+            color: #2e86de;
+        }
+        
+        .btn-message-action.delete {
+            color: #e74c3c;
+        }
+        
+        .btn-message-action.edit:hover {
+            background-color: #2e86de;
+            color: white;
+            border-color: #2e86de;
+        }
+        
+        .btn-message-action.delete:hover {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+        
+        /* Enhanced pagination */
+        .pagination-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        
+        .pagination {
+            margin-bottom: 0;
+        }
+        
+        .page-link {
+            border: none;
+            margin: 0 3px;
+            border-radius: 4px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .page-item.active .page-link {
+            background-color: #c32424;
+            color: white;
+        }
+        
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .items-per-page span {
+            color: #555;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        /* Enhanced notification */
+        #notifications-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 300px;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Enhanced modal styles */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .modal-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        #editMessageText {
+            resize: none;
+            min-height: 120px;
+        }
+        
+        /* Enhanced search box styling */
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-box input {
+            padding-right: 40px;
+            height: 42px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: #c32424;
+            box-shadow: 0 0 0 0.2rem rgba(195, 36, 36, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        /* Responsive improvements */
         @media (max-width: 991.98px) {
             .admin-main {
                 padding-left: 0;
             }
-            
-            .admin-table-container {
-                overflow-x: auto;
-                margin: 0 -15px;
-                padding: 0 15px;
+        }
+        
+        /* Laptop specific styles to fix Apply Filters button alignment */
+        @media (min-width: 992px) {
+            .filter-sort-container {
+                padding: 15px 20px;
             }
             
-            /* Ensure table doesn't overflow container */
-            .table-responsive {
-                min-width: 100%;
+            .filter-sort-container .row {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: flex-start;
+                margin: 0 -8px;
             }
             
-            /* Add spacing between pagination components */
-            .pagination {
-                margin-top: 10px;
+            .filter-sort-container .col-lg-3,
+            .filter-sort-container .col-lg-4, 
+            .filter-sort-container .col-lg-2 {
+                padding: 0 8px;
+                margin-bottom: 0;
+            }
+            
+            .filter-item {
+                margin-bottom: 0;
+            }
+            
+            .filter-sort-container .filter-label {
+                margin-bottom: 8px;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+            
+            .filter-sort-container .col-lg-3 {
+                flex: 0 0 20%;
+                max-width: 20%;
+            }
+            
+            .filter-sort-container .col-lg-4 {
+                flex: 0 0 40%;
+                max-width: 40%;
+            }
+            
+            .filter-sort-container .col-lg-2 {
+                flex: 0 0 20%;
+                max-width: 20%;
+            }
+            
+            .filter-sort-container .form-select,
+            .filter-sort-container .form-control,
+            .filter-sort-container .btn-apply-filters {
+                height: 38px;
+            }
+            
+            .filter-sort-container .btn-apply-filters {
+                padding: 6px 15px;
+                width: 100%;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #c32424;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                margin-top: 28px; /* Match the height of label + margin */
+            }
+            
+            .filter-sort-container .btn-apply-filters i {
+                margin-right: 6px;
+                font-size: 0.85rem;
             }
         }
         
-        /* Mobile specific styles */
         @media (max-width: 767.98px) {
-            .admin-table thead {
-                display: none; /* Hide table headers on mobile */
-            }
-            
-            .admin-table tbody tr {
-                display: block;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: 0.25rem;
-                margin-bottom: 1rem;
-                padding: 0.5rem;
-                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
-            }
-            
-            .admin-table tbody td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border: none;
-                padding: 0.5rem 0.5rem;
-                text-align: right;
-            }
-            
-            /* Create column headers on mobile */
-            .admin-table tbody td:before {
-                content: attr(data-label);
-                font-weight: 600;
-                text-align: left;
-                padding-right: 0.5rem;
-            }
-            
-            /* Special styling for image column */
-            .admin-table td:first-child {
-                display: block;
-                text-align: center;
-                justify-content: center;
-            }
-            
-            .admin-table td:first-child:before {
-                display: none;
-            }
-            
-            /* Special styling for status badges */
-            .admin-table td .stock-badge {
-                margin-left: auto;
-            }
-            
-            /* Action buttons centered */
-            .admin-table td.action-buttons {
-                justify-content: center;
-            }
-            
-            .admin-table td.action-buttons:before {
-                display: none;
-            }
-            
-            /* Chat card specific styles - mobile first approach */
-            .chat-card {
-                display: block;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: 0.25rem;
-                margin-bottom: 1rem;
-                padding: 0.5rem;
-                box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
-                background-color: #fff;
-            }
-            
-            .chat-card-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid rgba(0,0,0,.05);
-            }
-            
-            .chat-card-row:last-of-type {
-                border-bottom: none;
-            }
-            
-            .chat-card-label {
-                font-weight: 600;
-                text-align: left;
-                padding-right: 0.5rem;
-                flex: 0 0 90px;
-            }
-            
-            .chat-card-value {
-                text-align: right;
-                flex: 1;
-            }
-            
-            .chat-card-actions {
-                display: flex;
-                justify-content: flex-end;
-                padding-top: 0.5rem;
-                border-top: 1px solid rgba(0,0,0,.05);
-                margin-top: 0.5rem;
-            }
-            
-            .chat-card-actions .btn {
-                margin-left: 0.5rem;
-            }
-            
-            /* Improve pagination on small screens */
-            .d-flex.justify-content-between.align-items-center.mt-4 {
+            .message-header {
                 flex-direction: column;
-                align-items: flex-start !important;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .message-timestamp {
+                font-size: 0.75rem;
+            }
+            
+            .chat-header {
+                padding: 12px 16px;
+            }
+            
+            .pagination-container {
+                padding: 12px;
             }
             
             .items-per-page {
                 margin-bottom: 1rem;
-                width: 100%;
             }
             
-            nav[aria-label="Page navigation"] {
+            .search-box {
                 width: 100%;
-                display: flex;
+                margin-bottom: 10px;
+            }
+            
+            .filter-sort-container {
+                padding: 15px;
+            }
+            
+            .filter-sort-container .col-lg-4 {
+                margin-bottom: 10px;
+            }
+            
+            .filter-sort-container .btn-apply-filters {
+                margin-top: 5px;
+            }
+            
+            .d-flex.justify-content-between.align-items-center.mb-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .d-flex.align-items-center {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .admin-page-title {
+                margin-bottom: 15px;
+                font-size: 1.5rem;
+            }
+            
+            .filter-body {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .filter-item {
+                width: 100%;
+                min-width: unset;
+            }
+            
+            .btn-apply-filters {
+                width: 100%;
                 justify-content: center;
-            }
-        }
-        
-        /* Between small and medium screens */
-        @media (min-width: 768px) and (max-width: 991.98px) {
-            .message-text {
-                max-width: 100%;
-                word-break: break-word;
+                margin-top: 8px;
             }
             
-            .chat-message {
+            .chat-filters {
+                padding: 12px 16px;
+            }
+        }
+        
+        /* Inline filter & sort styling */
+        .filter-sort-container {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        
+        .filter-sort-heading {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        
+        .btn-apply-filters {
+            background-color: #c32424;
+            color: white;
+            border: none;
+            height: 40px;
+            padding: 0 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-apply-filters:hover {
+            background-color: #a71f1f;
+            color: white;
+        }
+        
+        /* Tablet layout (768px to 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .filter-sort-container {
+                padding: 16px;
+            }
+            
+            .filter-row {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 -8px;
+            }
+            
+            /* Force 2x2 grid on tablets */
+            .sender-col {
+                width: 50%;
+                padding-right: 8px;
+                margin-bottom: 16px;
+                order: 1;
+            }
+            
+            .sort-col {
+                width: 50%;
+                padding-left: 8px;
+                margin-bottom: 16px;
+                order: 2;
+            }
+            
+            .search-col {
+                width: 50%;
+                padding-right: 8px;
+                order: 3;
+            }
+            
+            .button-col {
+                width: 50%;
+                padding-left: 8px;
+                order: 4;
+                display: flex;
+                align-items: flex-end;
+            }
+            
+            /* Align elements perfectly */
+            .filter-button-wrapper {
                 width: 100%;
+                margin-top: 0;
+            }
+            
+            /* Vertical spacing between rows */
+            .search-col .filter-item, 
+            .button-col .filter-item {
+                margin-top: 0;
+            }
+            
+            /* Remove extra bottom margin */
+            .filter-col {
+                margin-bottom: 0;
+            }
+            
+            /* Align button with search field */
+            .button-col .filter-item {
+                margin-top: 24px; /* Match label height */
+            }
+            
+            /* Ensure consistent form control heights */
+            .filter-sort-container .form-select,
+            .filter-sort-container .form-control,
+            .filter-sort-container .btn-apply-filters {
+                height: 38px;
+            }
+            
+            /* Fix specifically for tablet view */
+            .button-col {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+            
+            /* Make button same height as search field */
+            .filter-button-wrapper {
+                margin-top: 24px; /* Match label height exactly */
+            }
+            
+            /* Remove any unnecessary spacing */
+            .filter-col {
+                margin-bottom: 0;
             }
         }
         
-        /* Ensure chat message wrapping at all screen sizes */
-        .message-text {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 100%;
+        /* Filter row custom layout */
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -8px;
         }
         
-        /* Edit message modal responsive */
-        @media (max-width: 767.98px) {
-            .modal-body textarea {
-                min-height: 100px;
+        .filter-col {
+            padding: 0 8px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .sender-col, .sort-col {
+            width: 50%;
+        }
+        
+        .search-col {
+            width: 100%;
+        }
+        
+        .button-col {
+            width: 100%;
+        }
+        
+        .btn-apply-filters {
+            height: 38px;
+            padding: 6px 15px;
+            font-size: 0.9rem;
+            background-color: #c32424;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-apply-filters i {
+            margin-right: 6px;
+            font-size: 0.85rem;
+        }
+        
+        /* Desktop layout (992px and up) */
+        @media (min-width: 992px) {
+            .filter-row {
+                flex-wrap: nowrap;
+                align-items: flex-end;
+            }
+            
+            .filter-col {
+                margin-bottom: 0;
+            }
+            
+            .sender-col, .sort-col {
+                width: 20%;
+            }
+            
+            .search-col {
+                width: 40%;
+            }
+            
+            .button-col {
+                width: 20%;
+            }
+            
+            .button-col .filter-item {
+                margin-top: 24px;
+            }
+            
+            /* Fix for button alignment */
+            .filter-button-wrapper {
+                margin-top: 0;
             }
         }
         
-        /* Extra overrides for chat message text that's displaying vertically */
-        .message-text {
-            white-space: normal !important;
-            display: block !important;
-            width: 100% !important;
-            word-break: break-word !important;
+        /* Filter button wrapper */
+        .filter-button-wrapper {
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
         }
         
-        /* Message text styling */
-        .message-text {
-            background-color: #f8f9fa;
-            padding: 0.5rem !important;
-            border-radius: 0.25rem;
-            margin-top: 0.25rem;
-        }
-        
-        p.message-text {
-            white-space: normal !important;
-            word-break: normal !important;
-            display: block !important;
-            width: 100% !important;
-            text-orientation: mixed !important;
-            writing-mode: horizontal-tb !important;
-            letter-spacing: normal !important;
-        }
-        
-        /* Delete these unnecessary card styles */
-        .chat-card-header,
-        .chat-card-body,
-        .chat-card-body strong,
-        .chat-card-body .rounded,
-        .chat-card-footer {
-            display: none;
-        }
-        
-        .btn-sm.mobile-edit-btn, .btn-sm.mobile-delete-btn {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            border-radius: 0.2rem;
-        }
-        
-        .mobile-edit-btn i, .mobile-delete-btn i {
-            font-size: 0.875rem;
+        .filter-button-wrapper .btn-apply-filters {
+            width: 100%;
         }
     </style>
 </head>
@@ -235,7 +708,7 @@
     <?php include 'components/admin_header.php'; ?>
     
     <!-- Add notifications container -->
-    <div id="notifications-container" class="mb-3"></div>
+    <div id="notifications-container"></div>
     
     <div class="d-flex admin-dashboard">
         <!-- Sidebar -->
@@ -246,133 +719,141 @@
         <!-- Main Content Area -->
         <main class="admin-main">
             <div class="container-fluid px-4 py-4">
-                <?php renderAdminHeader('CHAT RESPONSES', 'Search messages...'); ?>
+                <!-- Custom responsive header for mobile view -->
+                <div class="d-flex flex-column mb-4">
+                    <h1 class="admin-page-title">CHAT RESPONSES</h1>
+                </div>
                 
                 <!-- Include the fetch_chat_messages.php to get messages from DB -->
                 <?php include 'components/fetch_chat_messages.php'; ?>
                 
-                <!-- Chat Responses Table -->
-                <div class="admin-table-container">
-                    <div class="table-responsive">
-                        <!-- Simple card-based approach for chat messages on mobile -->
-                        <div class="chat-messages-mobile d-md-none">
-                            <?php
-                            // Use $messages array from fetch_chat_messages.php
-                            foreach ($messages as $message):
-                            ?>
-                            <div class="chat-card" data-id="<?php echo $message['chat_id']; ?>">
-                                <div class="chat-card-row">
-                                    <div class="chat-card-label">TIMESTAMP</div>
-                                    <div class="chat-card-value"><?php echo $message['chat_time']; ?></div>
-                                </div>
-                                <div class="chat-card-row">
-                                    <div class="chat-card-label">SENDER</div>
-                                    <div class="chat-card-value"><?php echo $message['sender_name']; ?></div>
-                                </div>
-                                <div class="chat-card-row">
-                                    <div class="chat-card-label">MESSAGE</div>
-                                    <div class="chat-card-value">
-                                        <div class="message-text p-2 bg-light rounded"><?php echo $message['message']; ?></div>
-                                    </div>
-                                </div>
-                                <div class="chat-card-actions">
-                                    <button class="btn btn-action edit-btn mobile-edit-btn" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editMessageModal" 
-                                            data-id="<?php echo $message['chat_id']; ?>"
-                                            data-timestamp="<?php echo $message['chat_time']; ?>"
-                                            data-sender="<?php echo $message['sender_name']; ?>"
-                                            data-message="<?php echo htmlspecialchars($message['message']); ?>">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                    <button class="btn btn-action delete-btn mobile-delete-btn" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#mobileDeleteMessageModal" 
-                                            data-id="<?php echo $message['chat_id']; ?>"
-                                            data-sender="<?php echo $message['sender_name']; ?>">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                <!-- Simple inline filter area that matches the screenshot -->
+                <div class="filter-sort-container mb-4">
+                    <h6 class="filter-sort-heading mb-3">FILTER & SORT</h6>
+                    <div class="filter-row">
+                        <div class="filter-col sender-col">
+                            <div class="filter-item">
+                                <label for="inlineSenderFilter" class="filter-label">SENDER:</label>
+                                <select class="form-select" id="inlineSenderFilter">
+                                    <option value="">All Senders</option>
+                                    <option value="Support Bot">Support Bot</option>
+                                    <option value="Customer">Customer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-col sort-col">
+                            <div class="filter-item">
+                                <label for="inlineSortOrder" class="filter-label">SORT BY:</label>
+                                <select class="form-select" id="inlineSortOrder">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-col search-col">
+                            <div class="filter-item">
+                                <label for="search-chat-responses" class="filter-label">SEARCH:</label>
+                                <div class="search-box">
+                                    <input type="text" class="form-control" id="search-chat-responses" placeholder="Search messages..." data-search-target="chat-responses">
+                                    <i class="bi bi-search search-icon"></i>
                                 </div>
                             </div>
-                            <?php endforeach; ?>
                         </div>
-                        
-                        <!-- Regular table for larger screens -->
-                        <table class="table admin-table chat-table d-none d-md-table">
-                            <colgroup>
-                                <col style="width: 15%;">
-                                <col style="width: 70%;">
-                                <col style="width: 15%;">
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>TIMESTAMP</th>
-                                    <th>MESSAGE</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($messages as $message): ?>
-                                <tr class="chat-row" data-id="<?php echo $message['chat_id']; ?>">
-                                    <td data-label="TIMESTAMP"><?php echo $message['chat_time']; ?></td>
-                                    <td data-label="MESSAGE">
-                                        <div class="chat-message">
-                                            <span class="message-sender"><?php echo $message['sender_name']; ?></span>
-                                            <p class="message-text"><?php echo $message['message']; ?></p>
-                                        </div>
-                                    </td>
-                                    <td class="action-buttons" data-label="ACTIONS">
-                                        <button class="btn btn-action edit-btn" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editMessageModal" 
-                                                data-message-id="<?php echo $message['chat_id']; ?>">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-action delete-btn" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#deleteMessageModal" 
-                                                data-message-id="<?php echo $message['chat_id']; ?>">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                        <div class="filter-col button-col">
+                            <div class="filter-button-wrapper">
+                                <button class="btn btn-apply-filters" id="applyInlineFilters">
+                                    <i class="bi bi-check2"></i>Apply Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Container -->
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div>
+                            <i class="bi bi-chat-dots"></i>
+                            <span>CONVERSATION HISTORY</span>
+                        </div>
+                        <span class="badge bg-light text-dark"><?php echo $totalMessages; ?> Messages</span>
+                    </div>
+                    
+                    <!-- Message list -->
+                    <div class="p-3" id="message-list">
+                        <?php foreach ($messages as $message): ?>
+                        <div class="message-card <?php echo strtolower(str_replace(' ', '-', $message['sender_name'])); ?>-message" 
+                             data-id="<?php echo $message['chat_id']; ?>"
+                             data-sender="<?php echo $message['sender_name']; ?>">
+                            <div class="message-header">
+                                <div class="message-sender">
+                                    <i class="bi <?php echo ($message['sender_name'] == 'Support Bot' || $message['sender_name'] == 'Bot') ? 'bi-robot' : 'bi-person-circle'; ?>"></i>
+                                    <span><?php echo $message['sender_name']; ?></span>
+                                </div>
+                                <div class="message-timestamp">
+                                    <i class="bi bi-clock"></i>
+                                    <?php echo $message['chat_time']; ?>
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <?php echo $message['message']; ?>
+                            </div>
+                            <div class="message-actions">
+                                <button class="btn-message-action edit" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editMessageModal" 
+                                        data-id="<?php echo $message['chat_id']; ?>"
+                                        data-timestamp="<?php echo $message['chat_time']; ?>"
+                                        data-sender="<?php echo $message['sender_name']; ?>"
+                                        data-message="<?php echo htmlspecialchars($message['message']); ?>">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn-message-action delete" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteMessageModal" 
+                                        data-id="<?php echo $message['chat_id']; ?>"
+                                        data-sender="<?php echo $message['sender_name']; ?>">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 
                 <!-- Pagination -->
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="items-per-page">
-                        <span>Items per page:</span>
-                        <select class="form-select form-select-sm d-inline-block w-auto ms-2" id="itemsPerPageSelect">
-                            <option value="10" <?php echo $itemsPerPage == 10 ? 'selected' : ''; ?>>10</option>
-                            <option value="25" <?php echo $itemsPerPage == 25 ? 'selected' : ''; ?>>25</option>
-                            <option value="50" <?php echo $itemsPerPage == 50 ? 'selected' : ''; ?>>50</option>
-                            <option value="100" <?php echo $itemsPerPage == 100 ? 'selected' : ''; ?>>100</option>
-                        </select>
+                <div class="pagination-container">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                        <div class="items-per-page mb-3 mb-md-0">
+                            <span>Items per page:</span>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="itemsPerPageSelect">
+                                <option value="10" <?php echo $itemsPerPage == 10 ? 'selected' : ''; ?>>10</option>
+                                <option value="25" <?php echo $itemsPerPage == 25 ? 'selected' : ''; ?>>25</option>
+                                <option value="50" <?php echo $itemsPerPage == 50 ? 'selected' : ''; ?>>50</option>
+                                <option value="100" <?php echo $itemsPerPage == 100 ? 'selected' : ''; ?>>100</option>
+                            </select>
+                        </div>
+                        
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination mb-0">
+                                <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page-1; ?>&items_per_page=<?php echo $itemsPerPage; ?>" aria-label="Previous">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <?php for($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                    <a class="page-link" href="?page=<?php echo $i; ?>&items_per_page=<?php echo $itemsPerPage; ?>"><?php echo $i; ?></a>
+                                </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page+1; ?>&items_per_page=<?php echo $itemsPerPage; ?>" aria-label="Next">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-                    
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination mb-0">
-                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page-1; ?>&items_per_page=<?php echo $itemsPerPage; ?>" aria-label="Previous">
-                                    Previous
-                                </a>
-                            </li>
-                            <?php for($i = 1; $i <= $totalPages; $i++): ?>
-                            <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>&items_per_page=<?php echo $itemsPerPage; ?>"><?php echo $i; ?></a>
-                            </li>
-                            <?php endfor; ?>
-                            <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page+1; ?>&items_per_page=<?php echo $itemsPerPage; ?>" aria-label="Next">
-                                    Next
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </main>
@@ -382,76 +863,6 @@
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Admin JS -->
     <script src="js/admin.js"></script>
-    
-    <!-- Add direct delete modal for mobile view -->
-    <div class="modal fade" id="mobileDeleteMessageModal" tabindex="-1" aria-labelledby="mobileDeleteMessageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="mobileDeleteMessageModalLabel">CONFIRM DELETION</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center p-4">
-                    <div class="delete-icon-container mb-4">
-                        <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
-                    </div>
-                    <h5 class="delete-title mb-3">Are you sure?</h5>
-                    <p class="delete-message mb-0">
-                        You are about to delete a message from <span id="mobileSenderName" class="fw-bold"></span>. This action cannot be undone.
-                    </p>
-                    <input type="hidden" id="mobileMessageId">
-                </div>
-                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="button" class="btn btn-danger px-4" id="mobileConfirmDelete">
-                        <i class="bi bi-trash me-2"></i>Delete Message
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Edit Message Modal -->
-    <div class="modal fade" id="editMessageModal" tabindex="-1" aria-labelledby="editMessageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editMessageModalLabel">EDIT MESSAGE</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form id="editMessageForm">
-                        <input type="hidden" id="editMessageId" name="messageId">
-                        <div class="mb-4">
-                            <label for="editTimestamp" class="form-label">TIMESTAMP</label>
-                            <input type="text" class="form-control" id="editTimestamp" name="timestamp" readonly>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editSender" class="form-label">SENDER</label>
-                            <select class="form-select" id="editSender" name="sender" required>
-                                <option value="Support Bot">Support Bot</option>
-                                <option value="Customer">Customer</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editMessageText" class="form-label">MESSAGE</label>
-                            <textarea class="form-control" id="editMessageText" name="message" rows="5" required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer border-top-0 pt-0">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-save" id="saveMessageChanges">
-                        <i class="bi bi-check-circle me-2"></i>Save Changes
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <!-- Delete Message Modal -->
     <div class="modal fade" id="deleteMessageModal" tabindex="-1" aria-labelledby="deleteMessageModalLabel" aria-hidden="true">
@@ -483,11 +894,52 @@
         </div>
     </div>
     
-    <!-- Custom script for chat buttons -->
+    <!-- Edit Message Modal -->
+    <div class="modal fade" id="editMessageModal" tabindex="-1" aria-labelledby="editMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMessageModalLabel">EDIT MESSAGE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editMessageForm">
+                        <input type="hidden" id="editMessageId" name="messageId">
+                        <div class="mb-4">
+                            <label for="editTimestamp" class="form-label">TIMESTAMP</label>
+                            <input type="text" class="form-control" id="editTimestamp" name="timestamp" readonly>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editSender" class="form-label">SENDER</label>
+                            <select class="form-select" id="editSender" name="sender" required>
+                                <option value="Bot">Bot</option>
+                                <option value="Support Bot">Support Bot</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editMessageText" class="form-label">MESSAGE</label>
+                            <textarea class="form-control" id="editMessageText" name="message" rows="5" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveMessageChanges">
+                        <i class="bi bi-check-circle me-2"></i>Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom script for chat functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile edit button click handler
-            document.querySelectorAll('.mobile-edit-btn').forEach(function(button) {
+            // Edit message handlers
+            document.querySelectorAll('.btn-message-action.edit').forEach(function(button) {
                 button.addEventListener('click', function() {
                     // Get data from data attributes
                     const id = this.getAttribute('data-id');
@@ -512,73 +964,67 @@
                 });
             });
             
-            // Mobile delete button click handler
-            document.querySelectorAll('.mobile-delete-btn').forEach(function(button) {
+            // Handle inline filter application
+            document.getElementById('applyInlineFilters').addEventListener('click', function() {
+                const sender = document.getElementById('inlineSenderFilter').value;
+                const sortOrder = document.getElementById('inlineSortOrder').value;
+                const searchTerm = document.getElementById('search-chat-responses').value.toLowerCase().trim();
+                
+                applyFiltersAndSearch(sender, sortOrder, searchTerm);
+                
+                // Show notification
+                showNotification('Filters applied successfully.');
+            });
+            
+            // Function to apply filters and search
+            function applyFiltersAndSearch(sender, sortOrder, searchTerm) {
+                // Filter by sender and search term
+                const messageCards = document.querySelectorAll('.message-card');
+                
+                messageCards.forEach(card => {
+                    const cardSender = card.getAttribute('data-sender');
+                    const messageContent = card.querySelector('.message-content').textContent.toLowerCase();
+                    
+                    // Check if card matches both sender filter and search term
+                    const matchesSender = !sender || cardSender === sender;
+                    const matchesSearch = !searchTerm || 
+                                         messageContent.includes(searchTerm) || 
+                                         cardSender.toLowerCase().includes(searchTerm);
+                    
+                    // Show only if both conditions are met
+                    if (matchesSender && matchesSearch) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Sort messages
+                const messageList = document.getElementById('message-list');
+                const visibleCards = Array.from(document.querySelectorAll('.message-card')).filter(
+                    card => card.style.display !== 'none'
+                );
+                
+                visibleCards.sort((a, b) => {
+                    const aTime = a.querySelector('.message-timestamp').textContent.trim();
+                    const bTime = b.querySelector('.message-timestamp').textContent.trim();
+                    
+                    if (sortOrder === 'oldest') {
+                        return aTime.localeCompare(bTime);
+                    } else {
+                        return bTime.localeCompare(aTime);
+                    }
+                });
+                
+                messageList.innerHTML = '';
+                visibleCards.forEach(card => messageList.appendChild(card));
+            }
+            
+            // Delete message handlers
+            document.querySelectorAll('.btn-message-action.delete').forEach(function(button) {
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
                     const sender = this.getAttribute('data-sender');
-                    
-                    // Set values in the mobile delete modal
-                    document.getElementById('mobileMessageId').value = id;
-                    document.getElementById('mobileSenderName').textContent = sender;
-                });
-            });
-            
-            // Mobile confirm delete button handler
-            document.getElementById('mobileConfirmDelete').addEventListener('click', function() {
-                const id = document.getElementById('mobileMessageId').value;
-                
-                // AJAX request to delete message
-                deleteMessage(id, function(success) {
-                    if (success) {
-                        // Close the modal
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('mobileDeleteMessageModal'));
-                        modal.hide();
-                        
-                        // Remove the message card from the DOM
-                        const card = document.querySelector(`.chat-card[data-id="${id}"]`);
-                        if (card) {
-                            card.remove();
-                        }
-                        
-                        // Show success notification
-                        showNotification(`Success! Message has been deleted.`);
-                    }
-                });
-            });
-            
-            // Desktop table edit button handler
-            document.querySelectorAll('.edit-btn:not(.mobile-edit-btn)').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const id = this.getAttribute('data-message-id') || row.dataset.id;
-                    const timestamp = row.querySelector('td[data-label="TIMESTAMP"]').textContent.trim();
-                    const sender = row.querySelector('.message-sender').textContent.trim();
-                    const messageText = row.querySelector('.message-text').textContent.trim();
-                    
-                    // Populate the modal
-                    document.getElementById('editMessageId').value = id;
-                    document.getElementById('editTimestamp').value = timestamp;
-                    
-                    // Set the correct sender option
-                    const senderSelect = document.getElementById('editSender');
-                    for (let i = 0; i < senderSelect.options.length; i++) {
-                        if (senderSelect.options[i].value === sender) {
-                            senderSelect.selectedIndex = i;
-                            break;
-                        }
-                    }
-                    
-                    document.getElementById('editMessageText').value = messageText;
-                });
-            });
-            
-            // Desktop table delete button handler
-            document.querySelectorAll('.delete-btn:not(.mobile-delete-btn)').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const id = this.getAttribute('data-message-id') || row.dataset.id;
-                    const sender = row.querySelector('.message-sender').textContent.trim();
                     
                     // Set values in the delete modal
                     document.getElementById('deleteMessageId').value = id;
@@ -586,7 +1032,7 @@
                 });
             });
             
-            // Desktop confirm delete button handler
+            // Confirm delete button handler
             document.getElementById('confirmDeleteMessage').addEventListener('click', function() {
                 const id = document.getElementById('deleteMessageId').value;
                 
@@ -597,10 +1043,10 @@
                         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteMessageModal'));
                         modal.hide();
                         
-                        // Remove the message row from the DOM
-                        const row = document.querySelector(`tr[data-id="${id}"]`);
-                        if (row) {
-                            row.remove();
+                        // Remove the message card from the DOM
+                        const card = document.querySelector(`.message-card[data-id="${id}"]`);
+                        if (card) {
+                            card.remove();
                         }
                         
                         // Show success notification
@@ -669,28 +1115,36 @@
             
             // Function to update message in UI
             function updateMessageInUI(messageId, sender, messageText) {
-                // Update in desktop view
-                const row = document.querySelector(`tr[data-id="${messageId}"]`);
-                if (row) {
-                    const senderElement = row.querySelector('.message-sender');
-                    const textElement = row.querySelector('.message-text');
-                    if (senderElement) senderElement.textContent = sender;
-                    if (textElement) textElement.textContent = messageText;
-                }
-                
-                // Update in mobile view
-                const card = document.querySelector(`.chat-card[data-id="${messageId}"]`);
+                const card = document.querySelector(`.message-card[data-id="${messageId}"]`);
                 if (card) {
-                    const senderElement = card.querySelector('.chat-card-row:nth-child(2) .chat-card-value');
-                    const textElement = card.querySelector('.message-text');
-                    if (senderElement) senderElement.textContent = sender;
-                    if (textElement) textElement.textContent = messageText;
+                    // Update sender class if needed
+                    if (card.getAttribute('data-sender') !== sender) {
+                        card.classList.remove('support-bot-message', 'customer-message', 'bot-message');
+                        card.classList.add(sender.toLowerCase().replace(' ', '-') + '-message');
+                        card.setAttribute('data-sender', sender);
+                        
+                        // Update sender icon and text
+                        const senderElement = card.querySelector('.message-sender');
+                        const iconElement = senderElement.querySelector('i');
+                        
+                        iconElement.className = `bi ${(sender === 'Support Bot' || sender === 'Bot') ? 'bi-robot' : 'bi-person-circle'}`;
+                        senderElement.querySelector('span').textContent = sender;
+                    }
+                    
+                    // Update message content
+                    card.querySelector('.message-content').textContent = messageText;
                     
                     // Update data attributes for future edits
-                    const editBtn = card.querySelector('.mobile-edit-btn');
+                    const editBtn = card.querySelector('.btn-message-action.edit');
                     if (editBtn) {
                         editBtn.setAttribute('data-sender', sender);
                         editBtn.setAttribute('data-message', messageText);
+                    }
+                    
+                    // Update delete button if needed
+                    const deleteBtn = card.querySelector('.btn-message-action.delete');
+                    if (deleteBtn) {
+                        deleteBtn.setAttribute('data-sender', sender);
                     }
                 }
             }
