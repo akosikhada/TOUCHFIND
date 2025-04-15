@@ -42,8 +42,7 @@ if (isset($_GET['product_id'])) {
         
         /* Enhanced Product Details Styling */
         .main-container {
-            padding-top: 80px;
-            min-height: calc(100vh - 70px);
+            padding-top: 40px;
             display: flex;
             justify-content: center;
             overflow-x: hidden !important;
@@ -383,7 +382,6 @@ if (isset($_GET['product_id'])) {
             }
             
             .main-container {
-                padding-top: 70px !important;
                 height: auto !important;
                 overflow-y: auto !important;
                 min-height: auto !important;
@@ -428,7 +426,6 @@ if (isset($_GET['product_id'])) {
             
             .main-container {
                 min-height: auto !important;
-                padding-top: 60px !important;
                 padding-bottom: 70px !important;
                 overflow-y: visible !important;
             }
@@ -570,9 +567,6 @@ if (isset($_GET['product_id'])) {
     <!-- Main Content -->
     <div class="main-container">
         <div class="product-container">
-            <div class="product-header">
-                <a href="categories.php" class="back-link">&larr; Back to Categories</a>
-            </div>
             <div class="product-detail">
                 <div class="product-detail-inner">
                     <div class="product-image-container">
