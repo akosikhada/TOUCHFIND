@@ -718,7 +718,24 @@ body {
 
   .search-btn {
     right: 10px;
-    top: calc(50% + 10px);
+    /* top: calc(50% + 10px); */
+  }
+
+  .search-container-header {
+    width: 180px;
+    height: 34px;
+    margin-right: 8px;
+    position: relative;
+  }
+
+  .search-results-dropdown {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    max-height: 300px;
+    width: 250px;
+    z-index: 1100;
   }
 }
 
@@ -810,4 +827,345 @@ body {
     margin-left: 0;
     padding: 20px 30px 60px 30px;
   }
+}
+
+/* Search input in header styles */
+.search-container-header {
+  position: relative;
+  height: 38px;
+  width: 280px;
+  margin-right: 15px;
+}
+
+.search-input-header {
+  width: 100%;
+  height: 100%;
+  padding: 0 40px 0 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(31, 41, 55, 0.8);
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input-header:focus {
+  background-color: rgba(31, 41, 55, 1);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+.search-btn-header {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.search-btn-header:hover {
+  color: white;
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-results-dropdown.active {
+  display: block;
+}
+
+.search-result-item {
+  display: flex;
+  padding: 12px 15px;
+  border-bottom: 1px solid #3a3a3a;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  align-items: center;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #333;
+}
+
+.search-result-image {
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 12px;
+  background-color: #333;
+}
+
+.search-result-info {
+  flex: 1;
+}
+
+.search-result-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: white;
+  font-size: 14px;
+}
+
+.search-result-price {
+  color: #aaa;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.no-results {
+  padding: 15px;
+  text-align: center;
+  color: #aaa;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .search-container-header {
+    width: 180px;
+    margin-right: 10px;
+  }
+
+  .search-input-header {
+    font-size: 13px;
+    padding: 0 35px 0 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-container-header {
+    width: 180px;
+    height: 34px;
+    margin-right: 8px;
+  }
+
+  .search-input-header {
+    font-size: 12px;
+    padding: 0 40px 0 10px;
+  }
+
+  .search-btn-header {
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    top: 50%;
+  }
+
+  .search-results-dropdown {
+    max-height: 300px;
+    width: 250px;
+    right: -35px;
+  }
+
+  .search-result-item {
+    padding: 10px;
+  }
+
+  .search-result-image {
+    width: 40px;
+    height: 35px;
+    margin-right: 8px;
+  }
+
+  .search-result-title {
+    font-size: 12px;
+  }
+
+  .search-result-price {
+    font-size: 10px;
+  }
+}
+
+/* Search results page styles */
+.search-results-heading {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.search-results-heading span {
+  color: #00c6ff;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(0, 198, 255, 0.5);
+  padding-bottom: 2px;
+  font-style: italic;
+}
+
+.no-search-results {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 40px auto;
+  max-width: 450px;
+  background-color: rgba(31, 41, 55, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-results-icon {
+  margin-bottom: 20px;
+  color: #aaa;
+}
+
+.no-search-results h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #eee;
+}
+
+.no-search-results p {
+  font-size: 15px;
+  color: #bbb;
+  margin-bottom: 25px;
+}
+
+.back-to-all {
+  display: inline-block;
+  padding: 12px 25px;
+  background: linear-gradient(90deg, #0047ab, #007bff);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.back-to-all:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(0, 123, 255, 0.5);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .search-results-heading {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .no-search-results {
+    padding: 30px 15px;
+    margin: 30px auto;
+  }
+
+  .no-search-results h3 {
+    font-size: 18px;
+  }
+
+  .no-search-results p {
+    font-size: 14px;
+  }
+
+  .back-to-all {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-results-heading {
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .search-results-heading span {
+    display: block;
+    margin-top: 5px;
+  }
+
+  .no-search-results {
+    padding: 25px 15px;
+    margin: 20px auto;
+  }
+
+  .no-results-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .no-search-results h3 {
+    font-size: 16px;
+  }
+
+  .no-search-results p {
+    font-size: 13px;
+  }
+
+  .back-to-all {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Remove blue underline from links */
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.category-item a,
+.product-card a,
+.search-result-item {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Specific fix for category links */
+.sidebar a,
+.sidebar a:hover,
+.sidebar a:focus {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Product names and categories links */
+.product-title a,
+.search-result-title a,
+.category-name a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Fix for links in search results */
+.search-results-dropdown a {
+  text-decoration: none !important;
+  color: inherit;
 }
