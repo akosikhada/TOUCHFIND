@@ -374,6 +374,12 @@ body::-webkit-scrollbar {
   right: 15px;
 }
 
+.order-item-price::before {
+  content: "Total price: ";
+  font-weight: 500;
+  color: #94a3b8;
+}
+
 .place-order-btn {
   width: 100%;
   background-color: #1e293b;
