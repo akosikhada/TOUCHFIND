@@ -22,93 +22,79 @@ document.querySelector(".cart-icon").addEventListener("click", function () {
   window.location.href = "cart.php";
 });
 
-// DOM references
-const searchIcon = document.getElementById("searchIcon");
-const searchModal = document.getElementById("searchModal");
-const closeSearch = document.getElementById("closeSearch");
+// DOM references for new search
 const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
 const searchResults = document.getElementById("searchResults");
-
-// Modal open/close
-searchIcon.addEventListener("click", () => {
-  searchModal.style.display = "flex";
-  setTimeout(() => {
-    searchModal.style.opacity = "1";
-    searchInput.focus();
-  }, 10);
-});
-
-closeSearch.addEventListener("click", () => {
-  searchModal.style.opacity = "0";
-  setTimeout(() => {
-    searchModal.style.display = "none";
-    searchResults.style.display = "none";
-  }, 300);
-});
-
-searchModal.addEventListener("click", (e) => {
-  if (e.target === searchModal) {
-    searchModal.style.opacity = "0";
-    setTimeout(() => {
-      searchModal.style.display = "none";
-      searchResults.style.display = "none";
-    }, 300);
-  }
-});
 
 // Real-time search from database
 function performSearch() {
   const query = searchInput.value.trim();
   if (query.length < 1) {
-    searchResults.style.display = "none";
+    searchResults.classList.remove("active");
     return;
   }
 
-  fetch(`search_products.php?q=${encodeURIComponent(query)}`)
-    .then((res) => res.json())
-    .then((products) => {
-      if (products.length > 0) {
-        searchResults.innerHTML = products
-          .map(
-            (product) => `
-          <div class="search-result-item" data-id="${product.product_id}">
-            <img src="../admin/${product.product_image}" alt="${
-              product.product_name
-            }" class="search-result-image">
-            <div class="search-result-details">
-              <div class="search-result-title">${product.product_name}</div>
-              <div class="search-result-price">
-                <span>PRICE :</span> 
-                <span>₱ ${parseFloat(product.product_price).toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        `
-          )
-          .join("");
-
-        document.querySelectorAll(".search-result-item").forEach((item) => {
-          item.addEventListener("click", () => {
-            const id = item.getAttribute("data-id");
-            window.location.href = `product_details.php?product_id=${id}`;
-          });
-        });
-
-        searchResults.style.display = "block";
-      } else {
-        searchResults.innerHTML = `<div class="no-results">No products found matching your search</div>`;
-        searchResults.style.display = "block";
-      }
-    });
+  // Use AJAX to fetch search results
+  const xhr = new XMLHttpRequest();
+  xhr.open(
+    "GET",
+    `search_products.php?query=${encodeURIComponent(query)}`,
+    true
+  );
+  xhr.onload = function () {
+    if (this.status === 200) {
+      searchResults.innerHTML = this.responseText;
+      searchResults.classList.add("active");
+    }
+  };
+  xhr.send();
 }
 
-searchButton.addEventListener("click", performSearch);
-searchInput.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") performSearch();
-  if (searchInput.value.length >= 1) {
-    performSearch();
-  } else {
-    searchResults.style.display = "none";
+// If search button exists, add event listener
+if (searchButton) {
+  searchButton.addEventListener("click", function () {
+    const query = searchInput.value.trim();
+    if (query.length > 0) {
+      window.location.href = `search_results.php?query=${encodeURIComponent(
+        query
+      )}`;
+    }
+  });
+}
+
+// If search input exists, add event listeners
+if (searchInput) {
+  searchInput.addEventListener("keyup", function () {
+    const query = this.value.trim();
+    if (query.length > 1) {
+      performSearch();
+    } else {
+      searchResults.innerHTML = "";
+      searchResults.classList.remove("active");
+    }
+  });
+
+  searchInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      const query = this.value.trim();
+      if (query.length > 0) {
+        window.location.href = `search_results.php?query=${encodeURIComponent(
+          query
+        )}`;
+      }
+    }
+  });
+}
+
+// Handle click outside to close results
+document.addEventListener("click", function (e) {
+  if (
+    searchInput &&
+    searchResults &&
+    !searchInput.contains(e.target) &&
+    !searchResults.contains(e.target)
+  ) {
+    searchResults.classList.remove("active");
   }
 });
