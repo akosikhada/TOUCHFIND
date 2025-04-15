@@ -37,7 +37,6 @@ $total = $subtotal + $tax;
 <body>
     <div class="header">
         <div class="brand">TOUCHFIND</div>
-        <div class="header-icons"></div>
     </div>
 
     <div class="main-container">
@@ -108,6 +107,7 @@ $total = $subtotal + $tax;
         </div>
     </div>
 
+    
     <?php include 'footer.php'; ?>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../js/checkout.js" defer></script>
