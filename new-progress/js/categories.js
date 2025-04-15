@@ -66,12 +66,16 @@ function performSearch() {
   }
 
   fetch(`search_products.php?q=${encodeURIComponent(query)}`)
-    .then(res => res.json())
-    .then(products => {
+    .then((res) => res.json())
+    .then((products) => {
       if (products.length > 0) {
-        searchResults.innerHTML = products.map(product => `
+        searchResults.innerHTML = products
+          .map(
+            (product) => `
           <div class="search-result-item" data-id="${product.product_id}">
-            <img src="../admin/${product.product_image}" alt="${product.product_name}" class="search-result-image">
+            <img src="../admin/${product.product_image}" alt="${
+              product.product_name
+            }" class="search-result-image">
             <div class="search-result-details">
               <div class="search-result-title">${product.product_name}</div>
               <div class="search-result-price">
@@ -80,9 +84,11 @@ function performSearch() {
               </div>
             </div>
           </div>
-        `).join("");
+        `
+          )
+          .join("");
 
-        document.querySelectorAll(".search-result-item").forEach(item => {
+        document.querySelectorAll(".search-result-item").forEach((item) => {
           item.addEventListener("click", () => {
             const id = item.getAttribute("data-id");
             window.location.href = `product_details.php?product_id=${id}`;
