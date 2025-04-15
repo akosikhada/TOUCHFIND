@@ -9,6 +9,11 @@
         PRODUCT
     </a>
     
+    <a href="order_list.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'order_list.php') ? 'active' : ''; ?>">
+        <i class="bi bi-bag nav-icon"></i>
+        ORDERS
+    </a>
+    
     <a href="add_product.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'add_product.php') ? 'active' : ''; ?>">
         <i class="bi bi-plus-circle nav-icon"></i>
         ADD PRODUCT
