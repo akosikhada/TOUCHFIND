@@ -39,6 +39,11 @@ if (isset($_GET['product_id'])) {
             min-height: 100vh !important;
             height: auto !important;
         }
+
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
         
         /* Enhanced Product Details Styling */
         .main-container {
@@ -132,7 +137,7 @@ if (isset($_GET['product_id'])) {
         .product-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
             position: relative;
             z-index: 0;

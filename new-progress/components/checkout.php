@@ -13,12 +13,11 @@ $items = [];
 $subtotal = 0;
 $tax = 50;
 $total = 0;
-$paymentMethod = 'Cash'; // Always defaulting to Cash for now
+$paymentMethod = 'Cash'; // Default
 
 while ($row = $result->fetch_assoc()) {
     $items[] = $row;
     $subtotal += $row['sub_total'];
-    $paymentMethod = $row['payment_method']; // Assume all items share the same method
 }
 
 $total = $subtotal + $tax;
@@ -89,6 +88,7 @@ $total = $subtotal + $tax;
                         <span>₱<?php echo number_format($total, 2); ?></span>
                     </div>
 
+                    <?php if (!empty($items)): ?>
                     <form action="process_checkout.php" method="post">
                         <button class="place-order-btn" type="submit">
                             <span class="btn-text">
@@ -100,6 +100,9 @@ $total = $subtotal + $tax;
                             <span class="btn-highlight"></span>
                         </button>
                     </form>
+                    <?php else: ?>
+                        <p class="text-danger mt-3">You haven't added any products yet. <a href="categories.php">Browse products</a></p>
+                    <?php endif; ?>
 
                     <a href="cart.php" class="return-link">Return to Cart</a>
                 </div>
@@ -107,7 +110,6 @@ $total = $subtotal + $tax;
         </div>
     </div>
 
-    
     <?php include 'footer.php'; ?>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../js/checkout.js" defer></script>

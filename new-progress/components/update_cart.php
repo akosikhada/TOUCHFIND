@@ -1,23 +1,20 @@
 <?php
 require 'db_connection.php';
-session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cart_id']) && isset($_POST['quantity'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart_id'], $_POST['quantity'])) {
     $cartId = intval($_POST['cart_id']);
     $quantity = intval($_POST['quantity']);
-    
-    // Validate quantity
+
     if ($quantity > 0) {
-        $updateSql = "UPDATE cart SET quantity = ? WHERE cart_id = ?";
-        $stmt = $conn->prepare($updateSql);
-        $stmt->bind_param("ii", $quantity, $cartId);
+        $stmt = $conn->prepare("UPDATE cart SET quantity = ?, sub_total = product_price * ? WHERE cart_id = ?");
+        $stmt->bind_param("iii", $quantity, $quantity, $cartId);
         $stmt->execute();
         $stmt->close();
-        
-        $_SESSION['cart_message'] = "Cart updated successfully!";
+
+        echo json_encode(['success' => true]);
+        exit;
     }
 }
 
-header("Location: cart.php");
-exit;
+echo json_encode(['success' => false, 'error' => 'Invalid data']);
 ?>

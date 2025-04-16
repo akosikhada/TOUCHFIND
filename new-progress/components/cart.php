@@ -47,7 +47,9 @@ $total = $subtotal + $tax;
             <div class="cart-content">
                 <div class="cart-items">
                     <?php foreach ($items as $index => $item): ?>
-                        <div class="cart-item cart-item-delay-<?php echo ($index % 2) + 1; ?>" data-price="<?php echo number_format($item['product_price'], 2); ?>">
+                        <div class="cart-item cart-item-delay-<?php echo ($index % 2) + 1; ?>" 
+                            data-id="<?php echo $item['cart_id']; ?>" 
+                            data-price="<?php echo $item['product_price']; ?>">
                             <div class="image-container">
                                 <img src="../admin/<?php echo htmlspecialchars($item['product_image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="cart-item-image">
                             </div>
@@ -110,7 +112,7 @@ $total = $subtotal + $tax;
                         <span>₱<?php echo number_format($total, 2); ?></span>
                     </div>
 
-                    <form action="checkout.php" method="get">
+                    <form id="checkoutForm" action="checkout.php" method="get">
                         <button class="action-btn" id="checkout-button">Proceed to Checkout</button>
                     </form>
                     <button class="action-secondary" onclick="window.location.href='categories.php'">Continue Shopping</button>
@@ -146,6 +148,20 @@ $total = $subtotal + $tax;
         });
     </script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkoutForm = document.getElementById("checkoutForm");
+
+            checkoutForm.addEventListener("submit", function (e) {
+                const cartItems = document.querySelectorAll(".cart-item");
+
+                if (cartItems.length === 0) {
+                    e.preventDefault(); // Prevent form submission
+                    alert("You haven't added any products to purchase yet. Please browse for products.");
+                }
+            });
+        });
+    </script>
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const updateSubtotal = (container) => {
                 const price = parseFloat(container.getAttribute("data-price"));
@@ -164,15 +180,14 @@ $total = $subtotal + $tax;
 
                 const tax = 50;
                 const finalTotal = total + tax;
-                
-                // Use more specific selectors and add null checks
+
                 const subtotalElement = document.querySelector(".order-summary .summary-row:first-child span:last-child");
                 const totalElement = document.querySelector(".order-summary .summary-row.total span:last-child");
-                
+
                 if (subtotalElement) {
                     subtotalElement.textContent = `₱${total.toFixed(2)}`;
                 }
-                
+
                 if (totalElement) {
                     totalElement.textContent = `₱${finalTotal.toFixed(2)}`;
                 }
@@ -184,7 +199,9 @@ $total = $subtotal + $tax;
                     let val = parseInt(input.value);
                     if (val < 99) {
                         input.value = val + 1;
-                        updateSubtotal(btn.closest(".cart-item"));
+                        const cartItem = btn.closest(".cart-item");
+                        updateSubtotal(cartItem);
+                        saveQuantityToDatabase(cartItem);
                     }
                 });
             });
@@ -195,13 +212,34 @@ $total = $subtotal + $tax;
                     let val = parseInt(input.value);
                     if (val > 1) {
                         input.value = val - 1;
-                        updateSubtotal(btn.closest(".cart-item"));
+                        const cartItem = btn.closest(".cart-item");
+                        updateSubtotal(cartItem);
+                        saveQuantityToDatabase(cartItem);
                     }
                 });
             });
+
+            const saveQuantityToDatabase = (cartItem) => {
+                const cartId = cartItem.getAttribute("data-id");
+                const quantity = cartItem.querySelector(".quantity-input").value;
+
+                fetch('update_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `cart_id=${cartId}&quantity=${quantity}`
+                }).then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Cart updated in DB.");
+                    } else {
+                        console.error("Failed to update cart:", data.error);
+                    }
+                });
+            };
+
             updateTotal();
         });
-    </script>
+        </script>
 
 </body>
 </html>
