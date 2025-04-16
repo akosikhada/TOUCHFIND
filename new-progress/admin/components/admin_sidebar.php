@@ -14,6 +14,11 @@
         ORDERS
     </a>
     
+    <a href="sales.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'sales.php') ? 'active' : ''; ?>">
+        <i class="bi bi-graph-up-arrow nav-icon"></i>
+        SALES
+    </a>
+
     <a href="add_product.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'add_product.php') ? 'active' : ''; ?>">
         <i class="bi bi-plus-circle nav-icon"></i>
         ADD PRODUCT

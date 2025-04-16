@@ -272,7 +272,7 @@ $shelfLocations = [
         <!-- Main Content Area -->
         <main class="admin-main">
             <div class="container-fluid px-4 py-4">
-                <?php renderAdminHeader('Product Management', '', false); ?>
+                <?php renderAdminHeader('PRODUCT MANAGEMENT', '', false); ?>
                 
                 <div class="product-form-container">
                     <div class="card product-form-card">
