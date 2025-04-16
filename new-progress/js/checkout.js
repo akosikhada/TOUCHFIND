@@ -47,37 +47,40 @@ if (placeOrderBtn) {
 
 // Apply animations with delay
 document.addEventListener("DOMContentLoaded", function () {
-  // First animate payment section from left
-  const paymentSection = document.querySelector(".checkout-section-delay-1");
-  if (paymentSection) {
+  // Animate order items and summary
+  const sections = document.querySelectorAll(".checkout-section-delay-2, .order-summary");
+  sections.forEach((section, i) => {
     setTimeout(() => {
-      paymentSection.style.opacity = "1";
-    }, 100);
-  }
+      section.style.opacity = "1";
+    }, 200 * (i + 1));
+  });
 
-  // Then animate order items section from left
-  const orderItemsSection = document.querySelector(".checkout-section-delay-2");
-  if (orderItemsSection) {
-    setTimeout(() => {
-      orderItemsSection.style.opacity = "1";
-    }, 400);
-  }
-
-  // Then animate order summary from right
-  const orderSummary = document.querySelector(".order-summary");
-  if (orderSummary) {
-    setTimeout(() => {
-      orderSummary.style.opacity = "1";
-    }, 700);
-  }
-
-  // Finally animate the individual order items from bottom
   const orderItems = document.querySelectorAll(".order-item");
-  orderItems.forEach((item, index) => {
+  orderItems.forEach((item, i) => {
     setTimeout(() => {
       item.style.opacity = "1";
-    }, 900 + index * 200);
+    }, 600 + i * 150);
   });
+
+  // Button hover effects
+  const placeOrderBtn = document.querySelector(".place-order-btn");
+  const btnHighlight = document.querySelector(".btn-highlight");
+
+  if (placeOrderBtn) {
+    placeOrderBtn.addEventListener("mouseenter", function () {
+      this.style.backgroundColor = "#1e293b";
+      this.style.borderColor = "#60a5fa";
+      this.style.boxShadow = "0 5px 15px rgba(59, 130, 246, 0.3)";
+      if (btnHighlight) btnHighlight.style.left = "0";
+    });
+
+    placeOrderBtn.addEventListener("mouseleave", function () {
+      this.style.backgroundColor = "#1e293b";
+      this.style.borderColor = "#3b82f6";
+      this.style.boxShadow = "none";
+      if (btnHighlight) btnHighlight.style.left = "-100%";
+    });
+  }
 });
 
 // DOM references for new search

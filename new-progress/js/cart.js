@@ -1,72 +1,3 @@
-// Load cart items from localStorage on page load
-document.addEventListener("DOMContentLoaded", function () {
-  // Get cart data from localStorage
-  const cart = JSON.parse(localStorage.getItem("touchfindCart")) || [];
-  const cartItemsContainer = document.querySelector(".cart-items");
-  const cartItemElements = document.querySelectorAll(".cart-item");
-
-  // If there are items in localStorage and cart has default items
-  if (cart.length > 0 && cartItemElements.length > 0) {
-    // Remove default cart items
-    cartItemElements.forEach((item) => {
-      item.remove();
-    });
-
-    // Add items from localStorage
-    cart.forEach((item, index) => {
-      const delay = index === 0 ? "cart-item-delay-1" : "cart-item-delay-2";
-      const subtotal = (item.price * item.quantity).toFixed(2);
-
-      const itemElement = document.createElement("div");
-      itemElement.className = `cart-item ${delay}`;
-      itemElement.setAttribute("data-price", item.price.toFixed(2));
-
-      itemElement.innerHTML = `
-                        <div class="image-container">
-                            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                        </div>
-                        <div class="cart-item-details">
-                            <div class="cart-category">Category: ${item.category}</div>
-                            <div class="cart-title">${item.name}</div>
-                            <div class="cart-available">Available: 50</div>
-                        </div>
-                        <div class="item-actions">
-                            <div class="action-row">
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn minus" data-id="${index}" onclick="decrementQuantity(this)">-</button>
-                                    <input type="text" class="quantity-input" value="${item.quantity}" data-id="${index}" readonly>
-                                    <button class="quantity-btn plus" data-id="${index}" onclick="incrementQuantity(this)">+</button>
-                                </div>
-                                <a class="remove-link" data-id="${index}" onclick="removeCartItem('${index}')">Remove</a>
-                            </div>
-                            <div class="subtotal-box">
-                                <div class="subtotal-label">Subtotal</div>
-                                <div class="subtotal-value">${subtotal}</div>
-                            </div>
-                        </div>
-                    `;
-
-      // Insert before payment methods section
-      const paymentMethodsContainer = document.querySelector(
-        ".payment-methods-container"
-      );
-      cartItemsContainer.insertBefore(itemElement, paymentMethodsContainer);
-    });
-
-    // Update cart count display
-    updateCartCount();
-
-    // Update total price
-    updateTotalPrice();
-
-    // Attach event listeners to quantity buttons
-    attachQuantityButtonListeners();
-
-    // Attach event listeners for remove links
-    attachRemoveItemListeners();
-  }
-});
-
 // Function to attach quantity button listeners
 function attachQuantityButtonListeners() {
   document.querySelectorAll(".minus").forEach((button) => {
@@ -172,15 +103,26 @@ function updateItemSubtotal(btn) {
   const item = btn.closest(".cart-item");
   const price = parseFloat(item.getAttribute("data-price"));
   const quantity = parseInt(item.querySelector(".quantity-input").value);
+  const cartId = item.getAttribute("data-id");
   const subtotal = price * quantity;
 
   // Update the subtotal display
-  item.querySelector(".subtotal-value").textContent = subtotal.toFixed(2);
+  item.querySelector(".subtotal-value").textContent = `₱${subtotal.toFixed(2)}`;
 
-  // Update cart in localStorage
-  updateCartInLocalStorage();
+  // Send to PHP to persist
+  fetch('update_cart.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `cart_id=${cartId}&quantity=${quantity}`
+  }).then(res => res.text())
+    .then(() => {
+        // Optional: you can show a message or toast here
+        console.log("Cart updated in DB.");
+    });
 
-  // Update the order summary
+  // Update totals
   updateTotalPrice();
 }
 
